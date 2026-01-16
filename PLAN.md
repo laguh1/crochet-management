@@ -301,17 +301,24 @@ crochet/
 
 ---
 
-## Questions to Resolve
+## Decisions Made
 
-1. **Naming for variations:** When you make the same style in different colors, should the name include color?
-   - Option A: "V-Stitch Scarf with Fringe (Beige)"
-   - Option B: Style name stays generic, color is just a field
+1. **Naming for variations:** Item names INCLUDE color
+   - Example: "V-Stitch Scarf with Fringe - Beige"
+   - Style name stays generic, item name includes color
 
-2. **ID sequence:** Should item IDs be chronological by creation date or sequential by entry?
+2. **ID sequence:** Sequential by entry (not chronological)
+   - Simpler to manage
+   - Use `date_started` field for chronological queries
+   - Note: Changing IDs later is difficult (photo renames, JSON refs)
 
-3. **Work hours tracking:** Do you track time per session or estimate total at completion?
+3. **Work hours tracking:** Track BOTH
+   - `work_sessions`: Array of {date, hours} for per-session tracking
+   - `work_hours_total`: Calculated or estimated total
 
-4. **Pricing strategy:** Is price set per style or varies by item (size/materials)?
+4. **Pricing strategy:** Per ITEM (not per style)
+   - Each item has its own `price` field
+   - Style can have `base_price` as suggestion only
 
 ---
 
@@ -335,12 +342,31 @@ crochet/
 ```
 
 ### Update: item.schema.json
-Add field:
+Add fields:
 ```json
 "style_id": {
   "type": "string",
   "pattern": "^STYLE-[0-9]{3}$",
   "description": "Reference to parent style"
+},
+"color": {
+  "type": "string",
+  "description": "Primary color of the item"
+},
+"work_sessions": {
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "date": { "type": "string", "format": "date" },
+      "hours": { "type": "number" }
+    }
+  },
+  "description": "Individual work sessions"
+},
+"work_hours_total": {
+  "type": "number",
+  "description": "Total hours (sum of sessions or estimate)"
 }
 ```
 
