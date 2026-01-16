@@ -187,6 +187,51 @@ ITEM-002_04_flat.jpg
 
 ---
 
+### Task 2.5: Price Calculator
+**Script:** `src/calculate_price.py`
+
+**Formula:**
+```
+material_cost = Σ (yarn.price_paid × balls_used)
+labor_cost = work_hours_actual × hourly_rate
+suggested_price = (material_cost + labor_cost) × (1 + profit_margin)
+```
+
+| Function | Input | Output |
+|----------|-------|--------|
+| Calculate material cost | Item yarns_used | Total material EUR |
+| Calculate labor cost | Hours + rate | Labor EUR |
+| Suggest price | Costs + margin | Suggested price |
+| Compare to market | Style history | Price range |
+
+**Configuration (in settings or per-user):**
+```json
+{
+  "hourly_rate": 8.00,
+  "profit_margin": 0.20,
+  "min_margin": 0.10,
+  "round_to": 5
+}
+```
+
+**Example:**
+```
+Item: V-Stitch Scarf - Beige
+├── Material: 3 balls × €3.50 = €10.50
+├── Labor: 15 hours × €8.00 = €120.00
+├── Subtotal: €130.50
+├── Margin (20%): €26.10
+├── Total: €156.60
+└── Suggested (rounded): €155.00
+```
+
+**Learning features:**
+- Track `price_sold` vs `suggested_price` to adjust recommendations
+- Compare similar styles to suggest competitive pricing
+- Flag if suggested price differs significantly from market (style avg)
+
+---
+
 ## Phase 3: Data Population
 
 ### Task 3.1: Populate Stitches
@@ -383,6 +428,29 @@ Add fields:
 "work_hours_actual": {
   "type": "number",
   "description": "Actual total (sum of sessions)"
+},
+"yarns_used": {
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "yarn_id": { "type": "string", "pattern": "^YARN-[0-9]{3}$" },
+      "balls_used": { "type": "number" }
+    }
+  },
+  "description": "Yarns with quantity (for cost calculation)"
+},
+"material_cost": {
+  "type": "number",
+  "description": "Calculated cost of materials (EUR)"
+},
+"suggested_price": {
+  "type": "number",
+  "description": "Auto-calculated suggested price"
+},
+"price": {
+  "type": "number",
+  "description": "Actual selling price set by user"
 }
 ```
 
