@@ -364,11 +364,37 @@ Examples:
 
 ### 2026-01-16: Project Created
 - Initial project setup
-- Created folder structure: data/, photos/, docs/
+- Created folder structure: data/, images/, docs/
 - Defined data models for Item, Yarn, Stitch
 - Created JSON schemas
 - Added sample data files
 - Documented relationships and conventions
+
+### 2026-01-16: Image Recognition Testing
+- Tested stitch pattern recognition with reference V-stitch image
+- Successfully identified 5/10 items using V-stitch pattern
+- Accuracy confirmed for distinguishing V-stitch, Puff, Shell, Granny patterns
+
+### 2026-01-16: Photo Grouping & Planning
+- Grouped 17 photos into 8 distinct items
+- Identified need for Style → Item hierarchy
+- Created `PLAN.md` with implementation roadmap
+- Created `src/` folder for Python automation scripts
+- Created `images/items/inbox/` for unsorted photos
+
+**Items identified from photos:**
+| ID | Style | Color | Photos |
+|----|-------|-------|--------|
+| ITEM-001 | V-Stitch Cowl | Yellow | 2 |
+| ITEM-002 | V-Stitch Scarf w/Fringe | Beige | 4 |
+| ITEM-003 | Puff Stitch Scarf | White | 4 |
+| ITEM-004 | V-Stitch Scarf | Green | 2 |
+| ITEM-005 | Triangle Shawl | Orange | 2 |
+| ITEM-006 | Granny Squares | Peach | 1 |
+| ITEM-007 | Chunky Puff Scarf | Grey | 1 |
+| ITEM-008 | Shell Stitch Scarf | Red | 1 |
+
+**Next session:** Implement Phase 1 (stitches → styles → items → photo rename)
 
 ---
 
