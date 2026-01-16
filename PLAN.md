@@ -312,9 +312,12 @@ crochet/
    - Use `date_started` field for chronological queries
    - Note: Changing IDs later is difficult (photo renames, JSON refs)
 
-3. **Work hours tracking:** Track BOTH
+3. **Work hours tracking:** Track ALL for learning/prediction
+   - `work_hours_estimated`: Initial estimate before starting
    - `work_sessions`: Array of {date, hours} for per-session tracking
-   - `work_hours_total`: Calculated or estimated total
+   - `work_hours_actual`: Calculated sum of sessions (actual time spent)
+   - Over time, compare estimated vs actual to improve predictions
+   - Style can store `avg_hours` based on completed items
 
 4. **Pricing strategy:** Per ITEM (not per style)
    - Each item has its own `price` field
@@ -336,10 +339,19 @@ crochet/
   "base_dimensions": { "width_cm": 25, "length_cm": 180 },
   "difficulty": "beginner",
   "estimated_hours": 15,
+  "avg_hours_actual": null,
+  "items_completed": 0,
   "base_price": 35.00,
   "notes": "Classic design, very popular"
 }
 ```
+
+**Time Prediction Learning:**
+- `estimated_hours`: Initial estimate for this style
+- `avg_hours_actual`: Auto-calculated average from completed items
+- `items_completed`: Count of finished items (for averaging)
+- Formula: `avg_hours_actual = sum(item.work_hours_actual) / items_completed`
+- Over time, use `avg_hours_actual` instead of `estimated_hours` for predictions
 
 ### Update: item.schema.json
 Add fields:
@@ -353,6 +365,10 @@ Add fields:
   "type": "string",
   "description": "Primary color of the item"
 },
+"work_hours_estimated": {
+  "type": "number",
+  "description": "Initial estimate before starting (for prediction learning)"
+},
 "work_sessions": {
   "type": "array",
   "items": {
@@ -364,9 +380,9 @@ Add fields:
   },
   "description": "Individual work sessions"
 },
-"work_hours_total": {
+"work_hours_actual": {
   "type": "number",
-  "description": "Total hours (sum of sessions or estimate)"
+  "description": "Actual total (sum of sessions)"
 }
 ```
 
