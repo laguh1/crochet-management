@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Stitch",
+  "description": "A crochet stitch or technique",
+  "type": "object",
+  "required": ["id", "name", "description"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^STITCH-[0-9]{3}$",
+      "description": "Unique identifier (e.g., STITCH-001)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stitch name"
+    },
+    "name_es": {
+      "type": "string",
+      "description": "Spanish name"
+    },
+    "abbreviation": {
+      "type": "string",
+      "description": "Common abbreviation (e.g., sc, dc)"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["basic", "textured", "lace", "colorwork", "specialty", "edging"],
+      "description": "Stitch category"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["beginner", "intermediate", "advanced"],
+      "description": "Difficulty level"
+    },
+    "description": {
+      "type": "string",
+      "description": "Main characteristic and how to perform"
+    },
+    "instruction_link": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to written tutorial"
+    },
+    "video_link": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to video tutorial"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Personal notes about the stitch"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Yarn",
+  "description": "Yarn material for crochet projects",
+  "type": "object",
+  "required": ["id", "name", "color", "material"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^YARN-[0-9]{3}$",
+      "description": "Unique identifier (e.g., YARN-001)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Yarn name"
+    },
+    "brand": {
+      "type": "string",
+      "description": "Brand name (e.g., DMC, Drops, Katia)"
+    },
+    "color": {
+      "type": "string",
+      "description": "Color name"
+    },
+    "color_code": {
+      "type": "string",
+      "description": "Manufacturer color code"
+    },
+    "material": {
+      "type": "string",
+      "enum": ["cotton", "wool", "acrylic", "silk", "linen", "bamboo", "alpaca", "mohair", "cashmere", "blend", "other"],
+      "description": "Primary fiber type"
+    },
+    "material_composition": {
+      "type": "string",
+      "description": "Detailed composition (e.g., 100% Cotton, 50% Wool 50% Acrylic)"
+    },
+    "material_specs": {
+      "type": "string",
+      "description": "Quality and characteristics description"
+    },
+    "weight_category": {
+      "type": "string",
+      "enum": ["lace", "fingering", "sport", "dk", "worsted", "aran", "bulky", "super_bulky"],
+      "description": "Yarn weight category"
+    },
+    "ball_weight_g": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Weight per ball in grams"
+    },
+    "ball_length_m": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Length per ball in meters"
+    },
+    "price_paid": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Price paid per ball (EUR)"
+    },
+    "purchase_location": {
+      "type": "string",
+      "description": "Store or website name"
+    },
+    "purchase_link": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL if bought online"
+    },
+    "purchase_date": {
+      "type": "string",
+      "format": "date",
+      "description": "When purchased"
+    },
+    "quantity_owned": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of balls in inventory"
+    },
+    "hook_size_mm": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Recommended crochet hook size (mm)"
+    },
+    "needle_size_mm": {
+      "type": "string",
+      "description": "Recommended knitting needle size range"
+    },
+    "gauge": {
+      "type": "string",
+      "description": "Tension/gauge information"
+    },
+    "care_instructions": {
+      "type": "object",
+      "properties": {
+        "wash_temp": { "type": "string", "description": "Max wash temperature" },
+        "machine_washable": { "type": "boolean" },
+        "tumble_dry": { "type": "boolean" },
+        "iron_temp": { "type": "string", "enum": ["none", "low", "medium", "high"] },
+        "bleach": { "type": "boolean" },
+        "dry_clean": { "type": "boolean" },
+        "special_notes": { "type": "string" }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

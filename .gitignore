@@ -1,0 +1,21 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Backup files
+*.backup.*
+
+# Node (if scripts use it later)
+node_modules/
+
+# Python (if scripts use it later)
+__pycache__/
+*.pyc
+venv/
+.env
