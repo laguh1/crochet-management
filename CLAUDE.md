@@ -186,12 +186,14 @@ Represents a crochet stitch/technique.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `id` | string | Yes | Unique identifier (e.g., "STITCH-001") |
-| `name` | string | Yes | Stitch name (e.g., "Single Crochet") |
+| `name` | string | Yes | Standardized name from Hookfully directory |
+| `name_aliases` | array | No | Alternative names used by bloggers/tutorials |
 | `abbreviation` | string | No | Common abbreviation (e.g., "sc") |
 | `category` | enum | No | basic, textured, lace, colorwork, specialty |
 | `difficulty` | enum | No | beginner, intermediate, advanced |
 | `description` | string | Yes | Main characteristic/description |
-| `instruction_link` | string | No | URL to tutorial/instructions |
+| `hookfully_link` | string | No | URL to Hookfully's tutorial for this stitch |
+| `instruction_link` | string | No | URL to tutorial user learned from |
 | `video_link` | string | No | URL to video tutorial |
 | `photos` | array | No | List of photo filenames (diagrams, samples) |
 | `notes` | string | No | Personal notes about the stitch |
@@ -201,18 +203,27 @@ Represents a crochet stitch/technique.
 | `created_at` | datetime | Auto | Record creation timestamp |
 | `updated_at` | datetime | Auto | Last update timestamp |
 
+**Stitch Naming Source of Truth:**
+```
+https://hookfully.com/a-z-crochet-stitch-directory/
+```
+Always use Hookfully's standardized name. Store blogger/tutorial names in `name_aliases`.
+
 **Example:**
 ```json
 {
   "id": "STITCH-001",
-  "name": "Single Crochet",
-  "abbreviation": "sc",
-  "category": "basic",
+  "name": "V-Stitch",
+  "name_aliases": ["V Stitch", "Vee Stitch"],
+  "abbreviation": "v-st",
+  "category": "lace",
   "difficulty": "beginner",
-  "description": "Basic stitch creating a tight, dense fabric. Insert hook, yarn over, pull through, yarn over, pull through both loops.",
+  "description": "Creates an open, lacy fabric with V-shaped pattern. Work (dc, ch 1, dc) in same stitch.",
+  "hookfully_link": "https://hookfully.com/v-stitch/",
   "instruction_link": "https://www.youtube.com/watch?v=example",
   "video_link": "https://www.youtube.com/watch?v=kFAw3hpTDkU",
-  "notes": "Foundation for most projects"
+  "photos": ["STITCH-001_tutorial.png", "STITCH-001_sample.jpg"],
+  "notes": "Great for shawls and lightweight scarves"
 }
 ```
 
@@ -584,6 +595,14 @@ When images are present in any inbox folder, they need to be processed to extrac
 
 **Location:** `images/stitches/inbox/`
 
+**Source of Truth for Stitch Names:**
+```
+https://hookfully.com/a-z-crochet-stitch-directory/
+```
+This directory contains 200+ standardized crochet stitch names (A-Z) in USA terminology.
+
+**IMPORTANT:** Do NOT pre-populate all stitches from the directory. Only add stitches to `stitches.json` as they are actually used.
+
 **Expected input files:**
 - Tutorial screenshots (from YouTube, blogs, pattern sites)
 - Stitch diagrams or charts
@@ -593,12 +612,14 @@ When images are present in any inbox folder, they need to be processed to extrac
 
 | Field | Source | Notes |
 |-------|--------|-------|
-| `name` | Tutorial / diagram | Full stitch name in English |
-| `abbreviation` | Tutorial | Common abbreviation (sc, dc, hdc, etc.) |
+| `name` | **Hookfully directory** | Standardized name (NOT blogger's custom name) |
+| `name_aliases` | Tutorial | Alternative names used by bloggers/tutorials |
+| `abbreviation` | Hookfully / Tutorial | Common abbreviation (sc, dc, hdc, etc.) |
 | `category` | Infer from pattern | basic, textured, lace, colorwork, specialty |
 | `difficulty` | Infer / tutorial | beginner, intermediate, advanced |
 | `description` | Tutorial | Brief description of the stitch technique |
-| `instruction_link` | Screenshot URL | Link to written tutorial |
+| `hookfully_link` | Hookfully directory | Link to Hookfully's tutorial for this stitch |
+| `instruction_link` | Screenshot URL | Link to the tutorial user learned from |
 | `video_link` | Screenshot URL | Link to video tutorial (YouTube, etc.) |
 | `notes` | User input | Personal notes about using this stitch |
 
@@ -606,24 +627,43 @@ When images are present in any inbox folder, they need to be processed to extrac
 ```
 1. READ images in images/stitches/inbox/
 2. IDENTIFY the stitch from visual pattern or tutorial title
-3. EXTRACT source URL if visible in screenshot
-4. CHECK if stitch already exists in stitches.json
-   - If exists: Update with new reference images
-   - If new: Create new entry
-5. DETERMINE next STITCH-ID (if new)
-6. CREATE/UPDATE stitch entry in stitches.json
-7. CREATE folder: images/stitches/STITCH-XXX/
-8. RENAME & MOVE images:
+3. CROSS-REFERENCE with Hookfully directory:
+   - Fetch https://hookfully.com/a-z-crochet-stitch-directory/
+   - Find matching stitch by visual pattern or name similarity
+   - Use Hookfully's standardized name (not blogger's name)
+   - If blogger uses different name, store in name_aliases
+4. EXTRACT source URL if visible in screenshot
+5. CHECK if stitch already exists in stitches.json (by Hookfully name)
+   - If exists: Update with new reference images/aliases
+   - If new: Create new entry with standardized name
+6. DETERMINE next STITCH-ID (if new)
+7. CREATE/UPDATE stitch entry in stitches.json
+8. CREATE folder: images/stitches/STITCH-XXX/
+9. RENAME & MOVE images:
    - Tutorial screenshot → STITCH-XXX_tutorial.png
    - Diagram → STITCH-XXX_diagram.png
    - Sample photo → STITCH-XXX_sample.jpg
-9. CONFIRM with user before saving
+10. CONFIRM with user before saving
 ```
+
+**Example: Name normalization**
+```
+Tutorial says: "Suzette Stitch" or "Lemon Peel Stitch"
+Hookfully says: "Suzette Stitch"
+→ Use: "Suzette Stitch"
+→ Store alias: ["Lemon Peel Stitch"] if tutorial used different name
+```
+
+**If stitch not found in Hookfully:**
+- Ask user to confirm the name
+- Note in `notes` field: "Not in Hookfully directory"
+- May be a variation or composite stitch
 
 **Pattern identification use:**
 - Stitch reference images can be compared against item photos
 - Helps identify which stitches were used in a finished item
 - Build visual library for future classification
+- Standardized naming ensures consistency across items
 
 ---
 
