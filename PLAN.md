@@ -7,7 +7,7 @@
 
 ## Data Model Hierarchy
 
-To handle production growth with repeated items and variations, we need a **Style → Item Instance** hierarchy:
+To handle production growth with repeated pieces and variations, we need a **Style → Piece Instance** hierarchy:
 
 ```
 STYLE (Design/Pattern)
@@ -15,14 +15,14 @@ STYLE (Design/Pattern)
   ├── name: "V-Stitch Scarf with Fringe"
   ├── style_id: STYLE-001
   ├── base_stitch: STITCH-010 (V-stitch)
-  ├── item_type: scarf
+  ├── piece_type: scarf
   ├── has_fringe: true
   │
   └── ITEM INSTANCES (actual pieces made)
        │
-       ├── ITEM-001: Beige, 180cm (sold)
-       ├── ITEM-005: Navy Blue, 180cm (available)
-       └── ITEM-012: Beige, 150cm (shorter variation)
+       ├── PIECE-001: Beige, 180cm (sold)
+       ├── PIECE-005: Navy Blue, 180cm (available)
+       └── PIECE-012: Beige, 150cm (shorter variation)
 ```
 
 ### Entity Relationships
@@ -36,7 +36,7 @@ STYLE (Design/Pattern)
        ▼
 ┌─────────────┐
 │    ITEM     │ ◄─── Actual finished piece
-│ (ITEM-001)  │
+│ (PIECE-001)  │
 └──────┬──────┘
        │ many:many
        ▼
@@ -51,12 +51,12 @@ STYLE (Design/Pattern)
 ## Phase 1: Foundation Setup
 
 ### Task 1.1: Define Stitches
-**Priority:** First (stitches are referenced by styles and items)
+**Priority:** First (stitches are referenced by styles and pieces)
 
 | Step | Action | Output |
 |------|--------|--------|
 | 1.1.1 | Review existing stitches in `stitches.json` | List of current stitches |
-| 1.1.2 | Identify stitches used in current items (from photos) | V-stitch, Puff, Shell, Granny |
+| 1.1.2 | Identify stitches used in current pieces (from photos) | V-stitch, Puff, Shell, Granny |
 | 1.1.3 | Add missing stitches with proper IDs | Updated `stitches.json` |
 | 1.1.4 | Assign final IDs: `STITCH-001` to `STITCH-NNN` | Confirmed stitch library |
 
@@ -69,7 +69,7 @@ STYLE (Design/Pattern)
 ---
 
 ### Task 1.2: Define Styles (NEW)
-**Priority:** Second (styles group similar items)
+**Priority:** Second (styles group similar pieces)
 
 | Step | Action | Output |
 |------|--------|--------|
@@ -77,7 +77,7 @@ STYLE (Design/Pattern)
 | 1.2.2 | Create `styles.json` data file | New data file |
 | 1.2.3 | Define styles from grouped photos | Style entries |
 
-**Styles to create from current items:**
+**Styles to create from current pieces:**
 
 | Style ID | Name | Type | Main Stitch |
 |----------|------|------|-------------|
@@ -92,52 +92,52 @@ STYLE (Design/Pattern)
 
 ---
 
-### Task 1.3: Define Items with IDs
-**Priority:** Third (items reference styles and stitches)
+### Task 1.3: Define Pieces with IDs
+**Priority:** Third (pieces reference styles and stitches)
 
 | Step | Action | Output |
 |------|--------|--------|
-| 1.3.1 | Assign item IDs to each grouped set | ID assignments |
+| 1.3.1 | Assign piece IDs to each grouped set | ID assignments |
 | 1.3.2 | Extract metadata from photo dates | date_started estimates |
-| 1.3.3 | Link items to styles | style_id references |
-| 1.3.4 | Update `items.json` with full data | Complete item records |
+| 1.3.3 | Link pieces to styles | style_id references |
+| 1.3.4 | Update `pieces.json` with full data | Complete piece records |
 
 **Items to create:**
 
 | Item ID | Style | Color | Photos | Earliest Date |
 |---------|-------|-------|--------|---------------|
-| ITEM-001 | STYLE-001 | Yellow/Mustard | 2 | 2025-11-23 |
-| ITEM-002 | STYLE-002 | Beige/Taupe | 4 | 2025-12-13 |
-| ITEM-003 | STYLE-003 | White/Cream | 4 | 2025-12-19 |
-| ITEM-004 | STYLE-004 | Green | 2 | 2025-12-23 |
-| ITEM-005 | STYLE-005 | Orange/Peach | 2 | 2026-01-01 |
-| ITEM-006 | STYLE-006 | Peach | 1 | 2025-11-22 |
-| ITEM-007 | STYLE-007 | Grey | 1 | 2025-12-20 |
-| ITEM-008 | STYLE-008 | Red/Magenta | 1 | 2025-12-29 |
+| PIECE-001 | STYLE-001 | Yellow/Mustard | 2 | 2025-11-23 |
+| PIECE-002 | STYLE-002 | Beige/Taupe | 4 | 2025-12-13 |
+| PIECE-003 | STYLE-003 | White/Cream | 4 | 2025-12-19 |
+| PIECE-004 | STYLE-004 | Green | 2 | 2025-12-23 |
+| PIECE-005 | STYLE-005 | Orange/Peach | 2 | 2026-01-01 |
+| PIECE-006 | STYLE-006 | Peach | 1 | 2025-11-22 |
+| PIECE-007 | STYLE-007 | Grey | 1 | 2025-12-20 |
+| PIECE-008 | STYLE-008 | Red/Magenta | 1 | 2025-12-29 |
 
 ---
 
 ### Task 1.4: Rename Photos
-**Priority:** Fourth (after items have IDs)
+**Priority:** Fourth (after pieces have IDs)
 
 | Step | Action | Output |
 |------|--------|--------|
 | 1.4.1 | Create photo naming convention | Documented standard |
 | 1.4.2 | Create Python script for batch rename | `src/rename_photos.py` |
-| 1.4.3 | Execute rename for all items | Renamed files |
-| 1.4.4 | Move photos to item subfolders | Organized folders |
+| 1.4.3 | Execute rename for all pieces | Renamed files |
+| 1.4.4 | Move photos to piece subfolders | Organized folders |
 
 **Naming Convention:**
 ```
-{ITEM-ID}_{sequence}_{descriptor}.{ext}
+{PIECE-ID}_{sequence}_{descriptor}.{ext}
 
 Examples:
-ITEM-001_01_wip.jpg
-ITEM-001_02_finished.jpg
-ITEM-002_01_wip.jpg
-ITEM-002_02_detail.jpg
-ITEM-002_03_worn.jpg
-ITEM-002_04_flat.jpg
+PIECE-001_01_wip.jpg
+PIECE-001_02_finished.jpg
+PIECE-002_01_wip.jpg
+PIECE-002_02_detail.jpg
+PIECE-002_03_worn.jpg
+PIECE-002_04_flat.jpg
 ```
 
 ---
@@ -151,7 +151,7 @@ ITEM-002_04_flat.jpg
 |----------|-------|--------|
 | Extract date from filename | `20251123_193645.jpg` | `2025-11-23` |
 | Extract EXIF data (if available) | Photo file | Date, dimensions |
-| Generate item stub | Photo files | Draft item JSON |
+| Generate piece stub | Photo files | Draft piece JSON |
 
 ---
 
@@ -160,19 +160,19 @@ ITEM-002_04_flat.jpg
 
 | Function | Input | Output |
 |----------|-------|--------|
-| Batch rename by mapping | Old names + item IDs | Renamed files |
-| Create item subfolders | Item IDs | Folder structure |
+| Batch rename by mapping | Old names + piece IDs | Renamed files |
+| Create piece subfolders | Item IDs | Folder structure |
 | Update references | Old paths | New paths in JSON |
 
 ---
 
-### Task 2.3: Item Creator
-**Script:** `src/create_item.py`
+### Task 2.3: Piece Creator
+**Script:** `src/create_piece.py`
 
 | Function | Input | Output |
 |----------|-------|--------|
-| Create new item from template | Style ID, color, date | New item in JSON |
-| Auto-assign next ID | Current max ID | `ITEM-NNN` |
+| Create new piece from template | Style ID, color, date | New piece in JSON |
+| Auto-assign next ID | Current max ID | `PIECE-NNN` |
 | Link to style | Style ID | Populated fields |
 
 ---
@@ -242,12 +242,12 @@ Item: V-Stitch Scarf - Beige
 - [ ] Add instruction links
 
 ### Task 3.2: Populate Styles
-- [ ] Create all 8 styles from current items
+- [ ] Create all 8 styles from current pieces
 - [ ] Link to primary stitches
 - [ ] Add base dimensions and characteristics
 
-### Task 3.3: Populate Items
-- [ ] Create all 8 items with full metadata
+### Task 3.3: Populate Pieces
+- [ ] Create all 8 pieces with full metadata
 - [ ] Extract dates from photo filenames
 - [ ] Estimate work hours
 - [ ] Set initial status (available/sold/gifted)
@@ -255,7 +255,7 @@ Item: V-Stitch Scarf - Beige
 
 ### Task 3.4: Organize Photos
 - [ ] Rename all photos
-- [ ] Move to item subfolders
+- [ ] Move to piece subfolders
 - [ ] Remove duplicates
 - [ ] Update JSON references
 
@@ -263,11 +263,11 @@ Item: V-Stitch Scarf - Beige
 
 ## Workflow for New Items (Future)
 
-When creating a new item:
+When creating a new piece:
 
 ```
 1. PHOTO INTAKE
-   └── Add photos to images/items/inbox/
+   └── Add photos to images/pieces/inbox/
 
 2. CLASSIFY (manual or assisted)
    ├── Identify stitch → STITCH-ID
@@ -275,13 +275,13 @@ When creating a new item:
    └── Extract date from filename
 
 3. CREATE ITEM
-   ├── Run: python src/create_item.py --style STYLE-002 --color "Navy Blue"
-   ├── Auto-assigns: ITEM-009
-   └── Creates stub in items.json
+   ├── Run: python src/create_piece.py --style STYLE-002 --color "Navy Blue"
+   ├── Auto-assigns: PIECE-009
+   └── Creates stub in pieces.json
 
 4. RENAME & ORGANIZE PHOTOS
-   ├── Run: python src/rename_photos.py --item ITEM-009
-   └── Moves to images/items/ITEM-009/
+   ├── Run: python src/rename_photos.py --piece PIECE-009
+   └── Moves to images/pieces/PIECE-009/
 
 5. COMPLETE DATA
    └── Fill in: dimensions, work_hours, price, status
@@ -297,20 +297,20 @@ crochet/
 ├── PLAN.md                    # This file
 ├── README.md
 ├── data/
-│   ├── items.json
+│   ├── pieces.json
 │   ├── yarns.json
 │   ├── stitches.json
 │   ├── styles.json            # NEW
 │   └── schemas/
-│       ├── item.schema.json
+│       ├── piece.schema.json
 │       ├── yarn.schema.json
 │       ├── stitch.schema.json
 │       └── style.schema.json  # NEW
 ├── images/
-│   ├── items/
+│   ├── pieces/
 │   │   ├── inbox/             # NEW - for unsorted photos
-│   │   ├── ITEM-001/
-│   │   ├── ITEM-002/
+│   │   ├── PIECE-001/
+│   │   ├── PIECE-002/
 │   │   └── ...
 │   ├── yarns/
 │   ├── stitches/
@@ -319,7 +319,7 @@ crochet/
 │   ├── __init__.py
 │   ├── extract_metadata.py
 │   ├── rename_photos.py
-│   ├── create_item.py
+│   ├── create_piece.py
 │   └── classify_stitch.py
 └── docs/
 ```
@@ -331,13 +331,13 @@ crochet/
 ### Morning: Foundation
 - [ ] Review and confirm stitch definitions
 - [ ] Create `styles.json` schema and initial data
-- [ ] Assign item IDs to all 8 items
-- [ ] Map photos to items
+- [ ] Assign piece IDs to all 8 pieces
+- [ ] Map photos to pieces
 
 ### Afternoon: Data Entry
-- [ ] Update `items.json` with full metadata
+- [ ] Update `pieces.json` with full metadata
 - [ ] Extract dates from photo filenames
-- [ ] Link items → styles → stitches
+- [ ] Link pieces → styles → stitches
 
 ### Scripts (if time permits)
 - [ ] Create `src/rename_photos.py`
@@ -350,7 +350,7 @@ crochet/
 
 1. **Naming for variations:** Item names INCLUDE color
    - Example: "V-Stitch Scarf with Fringe - Beige"
-   - Style name stays generic, item name includes color
+   - Style name stays generic, piece name includes color
 
 2. **ID sequence:** Sequential by entry (not chronological)
    - Simpler to manage
@@ -362,10 +362,10 @@ crochet/
    - `work_sessions`: Array of {date, hours} for per-session tracking
    - `work_hours_actual`: Calculated sum of sessions (actual time spent)
    - Over time, compare estimated vs actual to improve predictions
-   - Style can store `avg_hours` based on completed items
+   - Style can store `avg_hours` based on completed pieces
 
 4. **Pricing strategy:** Per ITEM (not per style)
-   - Each item has its own `price` field
+   - Each piece has its own `price` field
    - Style can have `base_price` as suggestion only
 
 ---
@@ -377,7 +377,7 @@ crochet/
 {
   "id": "STYLE-001",
   "name": "V-Stitch Scarf with Fringe",
-  "item_type": "scarf",
+  "piece_type": "scarf",
   "primary_stitch_id": "STITCH-010",
   "secondary_stitches": [],
   "has_fringe": true,
@@ -385,7 +385,7 @@ crochet/
   "difficulty": "beginner",
   "estimated_hours": 15,
   "avg_hours_actual": null,
-  "items_completed": 0,
+  "pieces_completed": 0,
   "base_price": 35.00,
   "notes": "Classic design, very popular"
 }
@@ -393,12 +393,12 @@ crochet/
 
 **Time Prediction Learning:**
 - `estimated_hours`: Initial estimate for this style
-- `avg_hours_actual`: Auto-calculated average from completed items
-- `items_completed`: Count of finished items (for averaging)
-- Formula: `avg_hours_actual = sum(item.work_hours_actual) / items_completed`
+- `avg_hours_actual`: Auto-calculated average from completed pieces
+- `pieces_completed`: Count of finished pieces (for averaging)
+- Formula: `avg_hours_actual = sum(piece.work_hours_actual) / pieces_completed`
 - Over time, use `avg_hours_actual` instead of `estimated_hours` for predictions
 
-### Update: item.schema.json
+### Update: piece.schema.json
 Add fields:
 ```json
 "style_id": {
@@ -408,7 +408,7 @@ Add fields:
 },
 "color": {
   "type": "string",
-  "description": "Primary color of the item"
+  "description": "Primary color of the piece"
 },
 "work_hours_estimated": {
   "type": "number",

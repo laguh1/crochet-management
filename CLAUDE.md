@@ -1,11 +1,11 @@
 # Crochet Project Manager
 
-A personal project management system for tracking handcrafted crochet work including shawls, scarves, bed throws, and similar items.
+A personal project management system for tracking handcrafted crochet work including shawls, scarves, bed throws, and similar pieces.
 
 ## Project Overview
 
 This system tracks three main entities:
-1. **Crochet Items** - Finished handcrafted pieces
+1. **Crochet Pieces** - Finished handcrafted pieces
 2. **Yarns** - Materials used in projects
 3. **Stitches** - Techniques/patterns used
 
@@ -15,16 +15,16 @@ This system tracks three main entities:
 crochet/
 ├── CLAUDE.md              # This file - project documentation
 ├── data/
-│   ├── items.json         # Crochet items database
+│   ├── pieces.json         # Crochet pieces database
 │   ├── yarns.json         # Yarn inventory database
 │   ├── stitches.json      # Stitch library database
 │   └── schemas/
-│       ├── item.schema.json
+│       ├── piece.schema.json
 │       ├── yarn.schema.json
 │       └── stitch.schema.json
 ├── images/
-│   ├── items/             # Photos of finished items
-│   │   └── {ITEM-001}/    # Subfolder per item (multiple photos)
+│   ├── pieces/             # Photos of finished pieces
+│   │   └── {PIECE-001}/    # Subfolder per piece (multiple photos)
 │   ├── yarns/             # Photos of yarn balls/skeins
 │   │   └── {YARN-001}/    # Subfolder per yarn (multiple photos)
 │   ├── stitches/          # Photos/diagrams of stitches
@@ -43,13 +43,13 @@ crochet/
 
 ## Data Models
 
-### 1. Crochet Item
+### 1. Crochet Piece
 
 Represents a finished handcrafted piece.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `id` | string | Yes | Unique identifier (e.g., "ITEM-001") |
+| `id` | string | Yes | Unique identifier (e.g., "PIECE-001") |
 | `name` | string | Yes | Item name (e.g., "Ocean Wave Shawl") |
 | `type` | enum | Yes | Type: shawl, scarf, bed_throw, blanket, other |
 | `dimensions` | object | Yes | Width, length, (optional) depth in cm |
@@ -77,7 +77,7 @@ Represents a finished handcrafted piece.
 **Example:**
 ```json
 {
-  "id": "ITEM-001",
+  "id": "PIECE-001",
   "name": "Ocean Wave Shawl",
   "type": "shawl",
   "dimensions": {
@@ -156,7 +156,7 @@ Represents yarn material in inventory.
   "color_code": "N56",
   "material": "cotton",
   "material_composition": "100% Cotton",
-  "material_specs": "Matte finish, soft texture, suitable for baby items",
+  "material_specs": "Matte finish, soft texture, suitable for baby pieces",
   "weight_category": "dk",
   "ball_weight_g": 50,
   "ball_length_m": 155,
@@ -233,8 +233,8 @@ Always use Hookfully's standardized name. Store blogger/tutorial names in `name_
 
 ```
 ┌─────────────────┐
-│  Crochet Item   │
-│    (ITEM-001)   │
+│  Crochet Piece   │
+│    (PIECE-001)   │
 └────────┬────────┘
          │
          │ uses (many-to-many)
@@ -248,12 +248,12 @@ Always use Hookfully's standardized name. Store blogger/tutorial names in `name_
 └───────┘  └─────────┘
 ```
 
-- **Item → Yarns**: One item can use multiple yarns; one yarn can be used in multiple items
-- **Item → Stitches**: One item can use multiple stitches; one stitch can be used in multiple items
+- **Piece → Yarns**: One piece can use multiple yarns; one yarn can be used in multiple pieces
+- **Piece → Stitches**: One piece can use multiple stitches; one stitch can be used in multiple pieces
 
 ---
 
-## Item Types
+## Piece Types
 
 | Type | Description |
 |------|-------------|
@@ -276,7 +276,7 @@ Always use Hookfully's standardized name. Store blogger/tutorial names in `name_
 | Category | Also Known As | Hook Size (mm) | Typical Uses |
 |----------|---------------|----------------|--------------|
 | `lace` | Thread, Cobweb | 1.5-2.25 | Doilies, fine shawls |
-| `fingering` | Sock, Baby | 2.25-3.25 | Socks, baby items |
+| `fingering` | Sock, Baby | 2.25-3.25 | Socks, baby pieces |
 | `sport` | Baby | 3.25-3.75 | Light garments |
 | `dk` | Light Worsted | 3.75-4.5 | Garments, accessories |
 | `worsted` | Medium, Aran | 4.5-5.5 | Most projects |
@@ -286,7 +286,7 @@ Always use Hookfully's standardized name. Store blogger/tutorial names in `name_
 
 ---
 
-## Item Status Flow
+## Piece Status Flow
 
 Items have two status dimensions: **work status** and **destination**.
 
@@ -344,15 +344,15 @@ Common platforms for selling handmade crochet:
 
 ## File Naming Conventions
 
-### Item Photos
+### Piece Photos
 ```
-images/items/{ITEM-ID}/{descriptor}.{ext}
+images/pieces/{PIECE-ID}/{descriptor}.{ext}
 ```
 Examples:
-- `images/items/ITEM-001/front.jpg`
-- `images/items/ITEM-001/detail-stitch.jpg`
-- `images/items/ITEM-001/worn.jpg`
-- `images/items/ITEM-001/packaging.jpg`
+- `images/pieces/PIECE-001/front.jpg`
+- `images/pieces/PIECE-001/detail-stitch.jpg`
+- `images/pieces/PIECE-001/worn.jpg`
+- `images/pieces/PIECE-001/packaging.jpg`
 
 ### Yarn Photos
 ```
@@ -386,8 +386,8 @@ Examples:
 - `images/marketing/text/care-card-template.md`
 
 ### Data Files
-- Use lowercase with hyphens: `items.json`, `yarns.json`, `stitches.json`
-- Backups: `items.backup.2026-01-16.json`
+- Use lowercase with hyphens: `pieces.json`, `yarns.json`, `stitches.json`
+- Backups: `pieces.backup.2026-01-16.json`
 
 ---
 
@@ -395,7 +395,7 @@ Examples:
 
 | Entity | Format | Example |
 |--------|--------|---------|
-| Item | `ITEM-{NNN}` | ITEM-001, ITEM-042 |
+| Piece | `PIECE-{NNN}` | PIECE-001, PIECE-042 |
 | Yarn | `YARN-{NNN}` | YARN-001, YARN-015 |
 | Stitch | `STITCH-{NNN}` | STITCH-001, STITCH-008 |
 | Style | `STYLE-{NNN}` | STYLE-001, STYLE-008 |
@@ -403,7 +403,7 @@ Examples:
 **ID Rules:**
 - **Padding:** 3 digits (001-999) - sufficient for personal inventory
 - **Assignment:** Sequential by entry order (not chronological by date)
-- **Gaps:** Never reuse IDs - leave gaps if items are archived
+- **Gaps:** Never reuse IDs - leave gaps if pieces are archived
 - **Starting point:** Begin at 001
 - **Immutability:** IDs should never change once assigned (used in folders, filenames, cross-references)
 
@@ -469,35 +469,96 @@ Instead of deleting records, mark them as `archived: true`. This preserves:
 
 ### 2026-01-16: Image Recognition Testing
 - Tested stitch pattern recognition with reference V-stitch image
-- Successfully identified 5/10 items using V-stitch pattern
+- Successfully identified 5/10 pieces using V-stitch pattern
 - Accuracy confirmed for distinguishing V-stitch, Puff, Shell, Granny patterns
 
 ### 2026-01-16: Photo Grouping & Planning
-- Grouped 17 photos into 8 distinct items
+- Grouped 17 photos into 8 distinct pieces
 - Identified need for Style → Item hierarchy
 - Created `PLAN.md` with implementation roadmap
 - Created `src/` folder for Python automation scripts
-- Created `images/items/inbox/` for unsorted photos
+- Created `images/pieces/inbox/` for unsorted photos
 
 **Items identified from photos:**
 | ID | Style | Color | Photos |
 |----|-------|-------|--------|
-| ITEM-001 | V-Stitch Cowl | Yellow | 2 |
-| ITEM-002 | V-Stitch Scarf w/Fringe | Beige | 4 |
-| ITEM-003 | Puff Stitch Scarf | White | 4 |
-| ITEM-004 | V-Stitch Scarf | Green | 2 |
-| ITEM-005 | Triangle Shawl | Orange | 2 |
-| ITEM-006 | Granny Squares | Peach | 1 |
-| ITEM-007 | Chunky Puff Scarf | Grey | 1 |
-| ITEM-008 | Shell Stitch Scarf | Red | 1 |
+| PIECE-001 | V-Stitch Cowl | Yellow | 2 |
+| PIECE-002 | V-Stitch Scarf w/Fringe | Beige | 4 |
+| PIECE-003 | Puff Stitch Scarf | White | 4 |
+| PIECE-004 | V-Stitch Scarf | Green | 2 |
+| PIECE-005 | Triangle Shawl | Orange | 2 |
+| PIECE-006 | Granny Squares | Peach | 1 |
+| PIECE-007 | Chunky Puff Scarf | Grey | 1 |
+| PIECE-008 | Shell Stitch Scarf | Red | 1 |
 
-**Next session:** Implement Phase 1 (stitches → styles → items → photo rename)
+**Next session:** Implement Phase 1 (stitches → styles → pieces → photo rename)
 
 ---
 
 ## Inbox Processing Instructions
 
 When images are present in any inbox folder, they need to be processed to extract metadata, create/update database entries, and organize files.
+
+### Photo Matching (Same Entity Detection)
+
+Multiple photos may belong to the same entity (yarn, stitch, or piece). Before creating new entries, detect if photos should be grouped together.
+
+**Matching signals by entity type:**
+
+| Entity | Signal | How to Detect |
+|--------|--------|---------------|
+| **Yarn** | Same product | Brand name, color code, product name match |
+| | Shop + Physical | Same color, same label visible, same brand |
+| | Color match | RGB/visual color similarity |
+| | Texture pattern | Similar fiber texture in closeups |
+| **Stitch** | Same pattern | Visual pattern structure matches |
+| | Same name | Tutorial title mentions same stitch name |
+| | Same source | Same URL/website visible |
+| **Piece** | Same work | Same stitch pattern, same color, same shape |
+| | Multiple angles | Same dimensions, edges, fringe visible |
+| | WIP + Finished | Same stitch, same yarn color, progressive stages |
+
+**Grouping workflow:**
+```
+1. READ all images in inbox
+2. ANALYZE each image for identifying features:
+   - Colors (dominant RGB values)
+   - Text visible (brand, labels, URLs)
+   - Pattern structure (for stitches/pieces)
+   - Shape/dimensions (for pieces)
+3. GROUP images that share identifying features
+4. CONFIRM groupings with user before processing
+5. PROCESS each group as a single entity
+```
+
+**Example: Yarn matching**
+```
+Inbox contains:
+  - screenshot_tienda.png (shop page showing "DMC Natura N56 Azul")
+  - IMG_20260117.jpg (physical yarn ball, blue color, DMC label visible)
+
+Detection:
+  - Both show "DMC" brand
+  - Both show blue color
+  - Screenshot shows "N56", label in photo shows "N56"
+  → GROUP as same yarn → Create single YARN-XXX entry
+```
+
+**Example: Piece matching**
+```
+Inbox contains:
+  - 20251213_photo1.jpg (beige scarf, V-stitch pattern, partial view)
+  - 20251213_photo2.jpg (beige scarf, V-stitch pattern, full view)
+  - 20251215_photo3.jpg (beige scarf with fringe, worn on mannequin)
+
+Detection:
+  - All show same beige color
+  - All show V-stitch pattern
+  - Same fringe style visible
+  → GROUP as same piece → Create single PIECE-XXX entry with 3 photos
+```
+
+---
 
 ### Yarns Inbox Processing
 
@@ -660,20 +721,20 @@ Hookfully says: "Suzette Stitch"
 - May be a variation or composite stitch
 
 **Pattern identification use:**
-- Stitch reference images can be compared against item photos
-- Helps identify which stitches were used in a finished item
+- Stitch reference images can be compared against piece photos
+- Helps identify which stitches were used in a finished piece
 - Build visual library for future classification
-- Standardized naming ensures consistency across items
+- Standardized naming ensures consistency across pieces
 
 ---
 
-### Items Inbox Processing
+### Pieces Inbox Processing
 
-**Location:** `images/items/inbox/`
+**Location:** `images/pieces/inbox/`
 
 **Expected input files:**
 - Work-in-progress photos
-- Finished item photos (multiple angles)
+- Finished piece photos (multiple angles)
 - Detail shots (stitch closeups, fringe, edges)
 
 **Metadata to extract:**
@@ -691,19 +752,19 @@ Hookfully says: "Suzette Stitch"
 
 **Processing workflow:**
 ```
-1. READ images in images/items/inbox/
-2. GROUP photos by item (same piece, different angles)
+1. READ images in images/pieces/inbox/
+2. GROUP photos by piece (same piece, different angles)
 3. IDENTIFY stitch pattern (compare to stitch library)
 4. MATCH to existing style OR flag for new style creation
 5. EXTRACT date from filename (YYYYMMDD pattern)
-6. DETERMINE next ITEM-ID
-7. CREATE item entry in items.json
-8. CREATE folder: images/items/ITEM-XXX/
+6. DETERMINE next PIECE-ID
+7. CREATE piece entry in pieces.json
+8. CREATE folder: images/pieces/PIECE-XXX/
 9. RENAME & MOVE images:
-   - ITEM-XXX_01_wip.jpg
-   - ITEM-XXX_02_finished.jpg
-   - ITEM-XXX_03_detail.jpg
-10. UPDATE item entry with photo references
+   - PIECE-XXX_01_wip.jpg
+   - PIECE-XXX_02_finished.jpg
+   - PIECE-XXX_03_detail.jpg
+10. UPDATE piece entry with photo references
 11. CONFIRM with user before saving
 ```
 
@@ -711,11 +772,11 @@ Hookfully says: "Suzette Stitch"
 
 ### General Inbox Check Command
 
-At the start of each session, check for pending inbox items:
+At the start of each session, check for pending inbox files:
 
 ```bash
 # Check all inboxes for unprocessed files
-ls -la images/items/inbox/
+ls -la images/pieces/inbox/
 ls -la images/yarns/inbox/
 ls -la images/stitches/inbox/
 ```
