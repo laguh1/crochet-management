@@ -58,7 +58,8 @@ Represents a finished handcrafted piece.
 | `work_hours` | number | No | Approximate total hours worked |
 | `photos` | array | No | List of photo filenames |
 | `price` | number | No | Price to sell (in EUR) |
-| `status` | enum | Yes | available, sold, gifted, keeping |
+| `work_status` | enum | Yes | in_progress, finished, ready |
+| `destination` | enum | Yes | for_sale, sold, for_gift, gifted, for_self, in_use |
 | `gift_recipient` | string | No | If gifted, to whom |
 | `sale_platform` | string | No | Where listed for sale |
 | `sale_link` | string | No | URL if listed online |
@@ -67,6 +68,9 @@ Represents a finished handcrafted piece.
 | `yarns_used` | array | Yes | List of yarn IDs used |
 | `stitches_used` | array | Yes | List of stitch IDs used |
 | `notes` | string | No | Additional notes |
+| `archived` | boolean | No | True if record is archived (default: false) |
+| `archived_date` | date | No | When archived (YYYY-MM-DD) |
+| `archived_reason` | string | No | Why archived (e.g., "sold", "gifted", "damaged") |
 | `created_at` | datetime | Auto | Record creation timestamp |
 | `updated_at` | datetime | Auto | Last update timestamp |
 
@@ -123,6 +127,9 @@ Represents yarn material in inventory.
 | `gauge` | string | No | Tension/gauge information |
 | `care_instructions` | object | No | Washing and maintenance info |
 | `notes` | string | No | Additional notes |
+| `archived` | boolean | No | True if record is archived (default: false) |
+| `archived_date` | date | No | When archived (YYYY-MM-DD) |
+| `archived_reason` | string | No | Why archived (e.g., "used up", "discontinued") |
 | `created_at` | datetime | Auto | Record creation timestamp |
 | `updated_at` | datetime | Auto | Last update timestamp |
 
@@ -186,8 +193,13 @@ Represents a crochet stitch/technique.
 | `description` | string | Yes | Main characteristic/description |
 | `instruction_link` | string | No | URL to tutorial/instructions |
 | `video_link` | string | No | URL to video tutorial |
+| `photos` | array | No | List of photo filenames (diagrams, samples) |
 | `notes` | string | No | Personal notes about the stitch |
+| `archived` | boolean | No | True if record is archived (default: false) |
+| `archived_date` | date | No | When archived (YYYY-MM-DD) |
+| `archived_reason` | string | No | Why archived (e.g., "duplicate", "merged") |
 | `created_at` | datetime | Auto | Record creation timestamp |
+| `updated_at` | datetime | Auto | Last update timestamp |
 
 **Example:**
 ```json
@@ -265,13 +277,44 @@ Represents a crochet stitch/technique.
 
 ## Item Status Flow
 
+Items have two status dimensions: **work status** and **destination**.
+
+### Work Status (progress)
 ```
-[available] ──sell──► [sold]
-     │
-     └──gift──► [gifted]
-     │
-     └──keep──► [keeping]
+[in_progress] ──finish──► [finished] ──prepare──► [ready]
 ```
+
+| Status | Description |
+|--------|-------------|
+| `in_progress` | Currently being worked on |
+| `finished` | Crocheting complete, but may need blocking, washing, or tagging |
+| `ready` | Ready for use, sale, or gifting |
+
+### Destination (intent/outcome)
+```
+[for_sale] ──sell──► [sold]
+[for_gift] ──give──► [gifted]
+[for_self] ──use───► [in_use]
+```
+
+| Status | Description |
+|--------|-------------|
+| `for_sale` | Intended to be sold |
+| `sold` | Has been sold |
+| `for_gift` | Intended as a gift for someone |
+| `gifted` | Has been given as gift |
+| `for_self` | For personal use |
+| `in_use` | Currently being used by self |
+
+### Combined Status Examples
+| Work Status | Destination | Meaning |
+|-------------|-------------|---------|
+| `in_progress` | `for_sale` | Making it to sell |
+| `finished` | `for_gift` | Done crocheting, preparing as gift |
+| `ready` | `for_sale` | Listed and ready to ship |
+| `ready` | `sold` | Sale completed |
+| `ready` | `for_self` | Ready to use personally |
+| `ready` | `in_use` | Currently using it |
 
 ---
 
@@ -344,6 +387,49 @@ Examples:
 | Item | `ITEM-{NNN}` | ITEM-001, ITEM-042 |
 | Yarn | `YARN-{NNN}` | YARN-001, YARN-015 |
 | Stitch | `STITCH-{NNN}` | STITCH-001, STITCH-008 |
+| Style | `STYLE-{NNN}` | STYLE-001, STYLE-008 |
+
+**ID Rules:**
+- **Padding:** 3 digits (001-999) - sufficient for personal inventory
+- **Assignment:** Sequential by entry order (not chronological by date)
+- **Gaps:** Never reuse IDs - leave gaps if items are archived
+- **Starting point:** Begin at 001
+- **Immutability:** IDs should never change once assigned (used in folders, filenames, cross-references)
+
+**Why sequential, not date-based:**
+- Use `date_started`, `purchase_date`, or `created_at` fields for chronological queries
+- Keeps IDs short and clean for folder/file naming
+- Avoids complexity in ID generation
+
+---
+
+## Archived Records
+
+Instead of deleting records, mark them as `archived: true`. This preserves:
+- Historical data and relationships
+- Photo references (files remain in place)
+- Sales/gift history
+
+**Archived field** (applies to all entities):
+
+```json
+{
+  "id": "YARN-005",
+  "archived": true,
+  "archived_date": "2026-01-17",
+  "archived_reason": "Discontinued by manufacturer"
+}
+```
+
+**Common archive reasons:**
+- Items: "sold", "gifted", "damaged", "unraveled for yarn reuse"
+- Yarns: "used up", "discontinued", "gave away"
+- Stitches: "duplicate entry", "merged with STITCH-XXX"
+- Styles: "discontinued", "merged with STYLE-XXX"
+
+**Filtering archived records:**
+- By default, queries/displays should filter out `archived: true`
+- Include archived records only when explicitly requested
 
 ---
 
@@ -395,6 +481,206 @@ Examples:
 | ITEM-008 | Shell Stitch Scarf | Red | 1 |
 
 **Next session:** Implement Phase 1 (stitches → styles → items → photo rename)
+
+---
+
+## Inbox Processing Instructions
+
+When images are present in any inbox folder, they need to be processed to extract metadata, create/update database entries, and organize files.
+
+### Yarns Inbox Processing
+
+**Location:** `images/yarns/inbox/`
+
+**Two purchase scenarios:**
+
+#### Scenario A: Online Purchase
+**Input files:**
+1. **Shop screenshot** - Screengrab of online product page (usually in Spanish → translate to English)
+2. **Physical photo** - User's photo of yarn at home (ball, label, texture)
+
+**Metadata extraction:** Most fields can be extracted from shop screenshot.
+
+#### Scenario B: Physical Shop Purchase
+**Input files:**
+1. **Physical photo only** - User's photo of yarn (ball, label)
+2. No shop screenshot available
+
+**Metadata extraction:** Limited to what's visible on label. **Must prompt user for:**
+- `price_paid` - "How much did you pay for this yarn?"
+- `purchase_location` - "Which shop did you buy this from?"
+- `purchase_date` - "When did you purchase this?"
+- `quantity_owned` - "How many balls did you buy?"
+- Any fields not visible on label
+
+**How to detect scenario:**
+- If inbox contains screenshot with web browser UI → Online purchase
+- If inbox contains only photos of physical yarn → Physical shop purchase
+
+---
+
+**Metadata to extract:**
+
+| Field | Online Source | Physical Shop Source | Ask User If Missing |
+|-------|---------------|---------------------|---------------------|
+| `name` | Shop screenshot | Label | Yes |
+| `brand` | Shop screenshot | Label | Yes |
+| `color` | Both images | Photo / label | Yes |
+| `color_code` | Shop / label | Label | No (optional) |
+| `material` | Shop screenshot | Label | Yes |
+| `material_composition` | Shop / label | Label | No (optional) |
+| `material_specs` | Shop screenshot | - | No (optional) |
+| `weight_category` | Shop screenshot | Label / infer | Yes if unclear |
+| `ball_weight_g` | Shop / label | Label | Yes |
+| `ball_length_m` | Shop / label | Label | Yes |
+| `price_paid` | Shop screenshot | **ASK USER** | **Required** |
+| `purchase_location` | Shop screenshot | **ASK USER** | **Required** |
+| `purchase_link` | Shop URL | N/A | No |
+| `purchase_date` | Filename / ask | **ASK USER** | **Required** |
+| `quantity_owned` | Ask user | **ASK USER** | Yes |
+| `hook_size_mm` | Shop / label | Label | No (optional) |
+| `needle_size_mm` | Shop / label | Label | No (optional) |
+| `gauge` | Shop / label | Label | No (optional) |
+| `care_instructions` | Shop / label | Label (symbols) | No (optional) |
+
+**Processing workflow:**
+```
+1. READ images in images/yarns/inbox/
+2. DETECT purchase scenario:
+   - Screenshot with browser UI present → Online purchase (Scenario A)
+   - Only physical yarn photos → Physical shop purchase (Scenario B)
+3. EXTRACT metadata:
+   - Scenario A: Extract from shop screenshot (translate Spanish → English)
+   - Scenario B: Extract from label only
+4. PROMPT USER for missing required fields (especially for Scenario B):
+   - price_paid, purchase_location, purchase_date, quantity_owned
+5. DETERMINE next YARN-ID (check yarns.json for max ID)
+6. CREATE yarn entry in yarns.json
+7. CREATE folder: images/yarns/YARN-XXX/
+8. RENAME & MOVE images:
+   - Shop screenshot → YARN-XXX_shop.png (if exists)
+   - Physical photo → YARN-XXX_ball.jpg (or _label.jpg, _texture.jpg)
+9. UPDATE yarn entry with photo references
+10. CONFIRM with user before saving
+```
+
+**Spanish → English common translations:**
+- Algodón = Cotton
+- Lana = Wool
+- Acrílico = Acrylic
+- Mezcla = Blend
+- Ovillo = Ball
+- Agujas = Needles
+- Ganchillo = Crochet hook
+- Lavado = Washing
+- Planchar = Iron
+- No usar secadora = Do not tumble dry
+- Lavar a mano = Hand wash
+- Lavar a máquina = Machine wash
+
+---
+
+### Stitches Inbox Processing
+
+**Location:** `images/stitches/inbox/`
+
+**Expected input files:**
+- Tutorial screenshots (from YouTube, blogs, pattern sites)
+- Stitch diagrams or charts
+- Sample photos showing the stitch pattern
+
+**Metadata to extract:**
+
+| Field | Source | Notes |
+|-------|--------|-------|
+| `name` | Tutorial / diagram | Full stitch name in English |
+| `abbreviation` | Tutorial | Common abbreviation (sc, dc, hdc, etc.) |
+| `category` | Infer from pattern | basic, textured, lace, colorwork, specialty |
+| `difficulty` | Infer / tutorial | beginner, intermediate, advanced |
+| `description` | Tutorial | Brief description of the stitch technique |
+| `instruction_link` | Screenshot URL | Link to written tutorial |
+| `video_link` | Screenshot URL | Link to video tutorial (YouTube, etc.) |
+| `notes` | User input | Personal notes about using this stitch |
+
+**Processing workflow:**
+```
+1. READ images in images/stitches/inbox/
+2. IDENTIFY the stitch from visual pattern or tutorial title
+3. EXTRACT source URL if visible in screenshot
+4. CHECK if stitch already exists in stitches.json
+   - If exists: Update with new reference images
+   - If new: Create new entry
+5. DETERMINE next STITCH-ID (if new)
+6. CREATE/UPDATE stitch entry in stitches.json
+7. CREATE folder: images/stitches/STITCH-XXX/
+8. RENAME & MOVE images:
+   - Tutorial screenshot → STITCH-XXX_tutorial.png
+   - Diagram → STITCH-XXX_diagram.png
+   - Sample photo → STITCH-XXX_sample.jpg
+9. CONFIRM with user before saving
+```
+
+**Pattern identification use:**
+- Stitch reference images can be compared against item photos
+- Helps identify which stitches were used in a finished item
+- Build visual library for future classification
+
+---
+
+### Items Inbox Processing
+
+**Location:** `images/items/inbox/`
+
+**Expected input files:**
+- Work-in-progress photos
+- Finished item photos (multiple angles)
+- Detail shots (stitch closeups, fringe, edges)
+
+**Metadata to extract:**
+
+| Field | Source | Notes |
+|-------|--------|-------|
+| `name` | User input / style | Item name with color |
+| `type` | Visual identification | shawl, scarf, blanket, cowl, etc. |
+| `style_id` | Match to existing style | Link to STYLE-XXX |
+| `color` | Photo analysis | Primary color(s) |
+| `dimensions` | User input | Width, length in cm |
+| `date_started` | Filename date | Extract from photo filename |
+| `stitches_used` | Visual comparison | Match against stitch library |
+| `yarns_used` | User input / visual | Link to YARN-XXX entries |
+
+**Processing workflow:**
+```
+1. READ images in images/items/inbox/
+2. GROUP photos by item (same piece, different angles)
+3. IDENTIFY stitch pattern (compare to stitch library)
+4. MATCH to existing style OR flag for new style creation
+5. EXTRACT date from filename (YYYYMMDD pattern)
+6. DETERMINE next ITEM-ID
+7. CREATE item entry in items.json
+8. CREATE folder: images/items/ITEM-XXX/
+9. RENAME & MOVE images:
+   - ITEM-XXX_01_wip.jpg
+   - ITEM-XXX_02_finished.jpg
+   - ITEM-XXX_03_detail.jpg
+10. UPDATE item entry with photo references
+11. CONFIRM with user before saving
+```
+
+---
+
+### General Inbox Check Command
+
+At the start of each session, check for pending inbox items:
+
+```bash
+# Check all inboxes for unprocessed files
+ls -la images/items/inbox/
+ls -la images/yarns/inbox/
+ls -la images/stitches/inbox/
+```
+
+If files exist, prompt user: "I found X files in [inbox]. Would you like me to process them now?"
 
 ---
 
