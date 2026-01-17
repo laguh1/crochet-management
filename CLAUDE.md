@@ -29,10 +29,12 @@ crochet/
 │   │   └── {YARN-001}/    # Subfolder per yarn (multiple photos)
 │   ├── stitches/          # Photos/diagrams of stitches
 │   │   └── {STITCH-001}/  # Subfolder per stitch (multiple photos)
-│   └── marketing/         # Marketing materials
-│       ├── logos/         # Brand logos
-│       ├── banners/       # Sale banners, headers
-│       └── text/          # Sale descriptions, templates
+│   ├── marketing/         # Marketing materials
+│   │   ├── logos/         # Brand logos
+│   │   ├── banners/       # Sale banners, headers
+│   │   └── text/          # Sale descriptions, templates
+│   └── reference/         # Reference images
+│       └── tools/         # Crochet hooks, needles, equipment
 ├── docs/
 │   └── care-instructions/ # Care instruction templates
 └── scripts/
@@ -67,6 +69,7 @@ Represents a finished handcrafted piece.
 | `sold_price` | number | No | Actual sale price |
 | `yarns_used` | array | Yes | List of yarn IDs used |
 | `stitches_used` | array | Yes | List of stitch IDs used |
+| `hook_size_mm` | number | No | Crochet hook size used (mm): 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 7.0, 8.0 |
 | `notes` | string | No | Additional notes |
 | `archived` | boolean | No | True if record is archived (default: false) |
 | `archived_date` | date | No | When archived (YYYY-MM-DD) |
@@ -283,6 +286,34 @@ Always use Hookfully's standardized name. Store blogger/tutorial names in `name_
 | `aran` | Heavy Worsted | 5.5-6.5 | Sweaters, blankets |
 | `bulky` | Chunky | 6.5-9 | Quick projects |
 | `super_bulky` | Roving | 9+ | Very quick projects |
+
+---
+
+## Available Crochet Hooks
+
+Reference photo: `images/reference/tools/crochet_hooks_2.0-8.0mm.jpg`
+
+Hook sizes are identified by their mm size (no separate ID needed):
+
+| Size (mm) | Typical Yarn Weight | Common Uses |
+|-----------|---------------------|-------------|
+| 2.0 | Lace, Fingering | Doilies, fine lace work |
+| 2.5 | Fingering | Socks, delicate items |
+| 3.0 | Fingering, Sport | Baby items, light accessories |
+| 3.5 | Sport, DK | Light garments |
+| 4.0 | DK | Garments, accessories |
+| 4.5 | DK, Worsted | Most versatile size |
+| 5.0 | Worsted | Standard projects |
+| 5.5 | Worsted, Aran | Blankets, sweaters |
+| 6.0 | Aran | Chunky accessories |
+| 7.0 | Bulky | Quick projects |
+| 8.0 | Bulky, Super Bulky | Very quick, chunky items |
+
+**Selecting hook size:**
+- Check yarn label for recommended hook size
+- Use smaller hook for tighter fabric (amigurumi, bags)
+- Use larger hook for drapey fabric (shawls, scarves)
+- Record `hook_size_mm` in piece entry (e.g., `"hook_size_mm": 4.5`)
 
 ---
 
