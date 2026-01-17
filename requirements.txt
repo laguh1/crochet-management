@@ -1,0 +1,30 @@
+# Crochet Project Manager - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# No external dependencies required for core functionality
+# The project uses only Python standard library:
+# - dataclasses (Python 3.7+)
+# - datetime
+# - decimal
+# - enum
+# - json
+# - pathlib
+# - re
+# - shutil
+# - typing
+
+# Optional dependencies for future features:
+
+# For React frontend API (Phase 6):
+# fastapi>=0.100.0
+# uvicorn>=0.23.0
+# pydantic>=2.0.0
+
+# For image processing (optional):
+# Pillow>=10.0.0
+
+# For development/testing:
+# pytest>=7.0.0
+# pytest-cov>=4.0.0
+# black>=23.0.0
+# mypy>=1.0.0

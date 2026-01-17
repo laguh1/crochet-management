@@ -1,458 +1,858 @@
-# Crochet Project - Implementation Plan
+# Crochet Project Manager - Development Plan
 
 **Created:** January 16, 2026
-**Status:** Planning
+**Last Updated:** January 17, 2026
+**Version:** 2.0
 
 ---
 
-## Data Model Hierarchy
+## Table of Contents
 
-To handle production growth with repeated pieces and variations, we need a **Style → Piece Instance** hierarchy:
+1. [Current Implementation Status](#current-implementation-status)
+2. [Data Model](#data-model)
+3. [Phase 1: Data Foundation](#phase-1-data-foundation) ✅ COMPLETE
+4. [Phase 2: Python Backend Core](#phase-2-python-backend-core) ✅ COMPLETE
+5. [Phase 3: Pricing Algorithm](#phase-3-pricing-algorithm) ✅ COMPLETE
+6. [Phase 4: File Management Automation](#phase-4-file-management-automation) ✅ COMPLETE
+7. [Phase 5: Standalone Desktop Application](#phase-5-standalone-desktop-application)
+8. [Phase 6: Online Deployment (Optional)](#phase-6-online-deployment-optional)
+9. [Technical Architecture](#technical-architecture)
+10. [File Structure](#file-structure)
 
-```
-STYLE (Design/Pattern)
-  │
-  ├── name: "V-Stitch Scarf with Fringe"
-  ├── style_id: STYLE-001
-  ├── base_stitch: STITCH-010 (V-stitch)
-  ├── piece_type: scarf
-  ├── has_fringe: true
-  │
-  └── ITEM INSTANCES (actual pieces made)
-       │
-       ├── PIECE-001: Beige, 180cm (sold)
-       ├── PIECE-005: Navy Blue, 180cm (available)
-       └── PIECE-012: Beige, 150cm (shorter variation)
-```
+---
+
+## Current Implementation Status
+
+### ✅ Completed
+
+| Feature | Status | Date | Notes |
+|---------|--------|------|-------|
+| Project structure | ✅ Done | Jan 16 | Folders, schemas, CLAUDE.md |
+| Data models defined | ✅ Done | Jan 16 | Pieces, Yarns, Stitches |
+| ID conventions | ✅ Done | Jan 16 | PIECE-XXX, YARN-XXX, STITCH-XXX |
+| Photo naming convention | ✅ Done | Jan 16 | {ID}_{seq}_{descriptor}.{ext} |
+| Inbox processing workflow | ✅ Done | Jan 17 | Documented in CLAUDE.md |
+| Stitches populated | ✅ Done | Jan 17 | 15 stitches with photos |
+| Yarns populated | ✅ Done | Jan 17 | 14 yarns with metadata |
+| Pieces populated | ✅ Done | Jan 17 | 13 pieces with photos |
+| Photos organized | ✅ Done | Jan 17 | Moved to entity folders |
+| Crochet hooks reference | ✅ Done | Jan 17 | 11 sizes documented |
+| Python models | ✅ Done | Jan 17 | piece.py, yarn.py, stitch.py |
+| Data service | ✅ Done | Jan 17 | CRUD for all entities |
+| Price service | ✅ Done | Jan 17 | Full pricing algorithm |
+| Time service | ✅ Done | Jan 17 | Session tracking, estimation |
+| Utils module | ✅ Done | Jan 17 | ID gen, date, photo utils |
+| CLI module | ✅ Done | Jan 17 | main, rename, data entry, inbox |
+
+### 📋 Planned
+
+| Feature | Priority | Phase |
+|---------|----------|-------|
+| React frontend | Medium | Phase 5 |
+| Desktop app (Electron) | Medium | Phase 5 |
+| Online deployment | Low | Phase 6 |
+
+---
+
+## Data Model
 
 ### Entity Relationships
 
 ```
 ┌─────────────┐
-│   STYLE     │ ◄─── Design/pattern template
+│   STYLE     │ ◄─── Design/pattern template (future)
 │ (STYLE-001) │
 └──────┬──────┘
        │ 1:many
        ▼
 ┌─────────────┐
-│    ITEM     │ ◄─── Actual finished piece
-│ (PIECE-001)  │
+│   PIECE     │ ◄─── Actual finished piece
+│ (PIECE-001) │
 └──────┬──────┘
        │ many:many
        ▼
 ┌─────────────┐      ┌─────────────┐
 │    YARN     │      │   STITCH    │
-│ (YARN-001)  │      │ (STITCH-001)│
+│ (YARN-001)  │      │(STITCH-001) │
 └─────────────┘      └─────────────┘
+       │                    │
+       └──────────┬─────────┘
+                  ▼
+            ┌──────────┐
+            │  PHOTOS  │ ◄─── All entities have photos arrays
+            └──────────┘
 ```
 
----
+### Photos Field (All Entities)
 
-## Phase 1: Foundation Setup
+Every entity (Piece, Yarn, Stitch) has a `photos` array field:
 
-### Task 1.1: Define Stitches
-**Priority:** First (stitches are referenced by styles and pieces)
-
-| Step | Action | Output |
-|------|--------|--------|
-| 1.1.1 | Review existing stitches in `stitches.json` | List of current stitches |
-| 1.1.2 | Identify stitches used in current pieces (from photos) | V-stitch, Puff, Shell, Granny |
-| 1.1.3 | Add missing stitches with proper IDs | Updated `stitches.json` |
-| 1.1.4 | Assign final IDs: `STITCH-001` to `STITCH-NNN` | Confirmed stitch library |
-
-**Current stitches to confirm:**
-- V-Stitch (used in yellow cowl, beige scarf, green scarf, orange shawl)
-- Puff/Bobble Stitch (used in white scarf, grey scarf)
-- Shell/Fan Stitch (used in red scarf)
-- Granny Square (used in peach squares)
-
----
-
-### Task 1.2: Define Styles (NEW)
-**Priority:** Second (styles group similar pieces)
-
-| Step | Action | Output |
-|------|--------|--------|
-| 1.2.1 | Create `styles.json` schema | New schema file |
-| 1.2.2 | Create `styles.json` data file | New data file |
-| 1.2.3 | Define styles from grouped photos | Style entries |
-
-**Styles to create from current pieces:**
-
-| Style ID | Name | Type | Main Stitch |
-|----------|------|------|-------------|
-| STYLE-001 | V-Stitch Cowl | cowl | V-stitch |
-| STYLE-002 | V-Stitch Scarf with Fringe | scarf | V-stitch |
-| STYLE-003 | Puff Stitch Scarf | scarf | Puff stitch |
-| STYLE-004 | V-Stitch Scarf (no fringe) | scarf | V-stitch |
-| STYLE-005 | V-Stitch Triangle Shawl | shawl | V-stitch |
-| STYLE-006 | Granny Square Blanket | blanket | Granny square |
-| STYLE-007 | Chunky Puff Scarf | scarf | Puff stitch |
-| STYLE-008 | Shell Stitch Scarf | scarf | Shell stitch |
-
----
-
-### Task 1.3: Define Pieces with IDs
-**Priority:** Third (pieces reference styles and stitches)
-
-| Step | Action | Output |
-|------|--------|--------|
-| 1.3.1 | Assign piece IDs to each grouped set | ID assignments |
-| 1.3.2 | Extract metadata from photo dates | date_started estimates |
-| 1.3.3 | Link pieces to styles | style_id references |
-| 1.3.4 | Update `pieces.json` with full data | Complete piece records |
-
-**Items to create:**
-
-| Item ID | Style | Color | Photos | Earliest Date |
-|---------|-------|-------|--------|---------------|
-| PIECE-001 | STYLE-001 | Yellow/Mustard | 2 | 2025-11-23 |
-| PIECE-002 | STYLE-002 | Beige/Taupe | 4 | 2025-12-13 |
-| PIECE-003 | STYLE-003 | White/Cream | 4 | 2025-12-19 |
-| PIECE-004 | STYLE-004 | Green | 2 | 2025-12-23 |
-| PIECE-005 | STYLE-005 | Orange/Peach | 2 | 2026-01-01 |
-| PIECE-006 | STYLE-006 | Peach | 1 | 2025-11-22 |
-| PIECE-007 | STYLE-007 | Grey | 1 | 2025-12-20 |
-| PIECE-008 | STYLE-008 | Red/Magenta | 1 | 2025-12-29 |
-
----
-
-### Task 1.4: Rename Photos
-**Priority:** Fourth (after pieces have IDs)
-
-| Step | Action | Output |
-|------|--------|--------|
-| 1.4.1 | Create photo naming convention | Documented standard |
-| 1.4.2 | Create Python script for batch rename | `src/rename_photos.py` |
-| 1.4.3 | Execute rename for all pieces | Renamed files |
-| 1.4.4 | Move photos to piece subfolders | Organized folders |
-
-**Naming Convention:**
-```
-{PIECE-ID}_{sequence}_{descriptor}.{ext}
-
-Examples:
-PIECE-001_01_wip.jpg
-PIECE-001_02_finished.jpg
-PIECE-002_01_wip.jpg
-PIECE-002_02_detail.jpg
-PIECE-002_03_worn.jpg
-PIECE-002_04_flat.jpg
-```
-
----
-
-## Phase 2: Automation Scripts
-
-### Task 2.1: Photo Metadata Extractor
-**Script:** `src/extract_metadata.py`
-
-| Function | Input | Output |
-|----------|-------|--------|
-| Extract date from filename | `20251123_193645.jpg` | `2025-11-23` |
-| Extract EXIF data (if available) | Photo file | Date, dimensions |
-| Generate piece stub | Photo files | Draft piece JSON |
-
----
-
-### Task 2.2: Photo Renamer
-**Script:** `src/rename_photos.py`
-
-| Function | Input | Output |
-|----------|-------|--------|
-| Batch rename by mapping | Old names + piece IDs | Renamed files |
-| Create piece subfolders | Item IDs | Folder structure |
-| Update references | Old paths | New paths in JSON |
-
----
-
-### Task 2.3: Piece Creator
-**Script:** `src/create_piece.py`
-
-| Function | Input | Output |
-|----------|-------|--------|
-| Create new piece from template | Style ID, color, date | New piece in JSON |
-| Auto-assign next ID | Current max ID | `PIECE-NNN` |
-| Link to style | Style ID | Populated fields |
-
----
-
-### Task 2.4: Stitch Classifier (Future)
-**Script:** `src/classify_stitch.py`
-
-| Function | Input | Output |
-|----------|-------|--------|
-| Compare photo to reference | Item photo + stitch refs | Suggested stitch |
-| Confidence scoring | Comparison results | Match percentage |
-
----
-
-### Task 2.5: Price Calculator
-**Script:** `src/calculate_price.py`
-
-**Formula:**
-```
-material_cost = Σ (yarn.price_paid × balls_used)
-labor_cost = work_hours_actual × hourly_rate
-suggested_price = (material_cost + labor_cost) × (1 + profit_margin)
-```
-
-| Function | Input | Output |
-|----------|-------|--------|
-| Calculate material cost | Item yarns_used | Total material EUR |
-| Calculate labor cost | Hours + rate | Labor EUR |
-| Suggest price | Costs + margin | Suggested price |
-| Compare to market | Style history | Price range |
-
-**Configuration (in settings or per-user):**
 ```json
 {
-  "hourly_rate": 8.00,
-  "profit_margin": 0.20,
-  "min_margin": 0.10,
-  "round_to": 5
+  "photos": ["ENTITY-ID_01_descriptor.jpg", "ENTITY-ID_02_descriptor.jpg"]
 }
 ```
 
-**Example:**
-```
-Item: V-Stitch Scarf - Beige
-├── Material: 3 balls × €3.50 = €10.50
-├── Labor: 15 hours × €8.00 = €120.00
-├── Subtotal: €130.50
-├── Margin (20%): €26.10
-├── Total: €156.60
-└── Suggested (rounded): €155.00
-```
-
-**Learning features:**
-- Track `price_sold` vs `suggested_price` to adjust recommendations
-- Compare similar styles to suggest competitive pricing
-- Flag if suggested price differs significantly from market (style avg)
+This enables:
+- Frontend image galleries
+- Visual inventory browsing
+- Photo-based search/filtering
 
 ---
 
-## Phase 3: Data Population
+## Phase 1: Data Foundation ✅ COMPLETE
 
-### Task 3.1: Populate Stitches
-- [ ] Confirm V-Stitch entry
-- [ ] Confirm Puff Stitch entry
-- [ ] Confirm Shell Stitch entry
-- [ ] Confirm Granny Square entry
-- [ ] Add instruction links
+### 1.1 Stitches Library ✅
+- [x] Define stitch schema
+- [x] Populate 15 stitches (basic + specialty)
+- [x] Add tutorial screenshots as photos
+- [x] Link to Hookfully reference
 
-### Task 3.2: Populate Styles
-- [ ] Create all 8 styles from current pieces
-- [ ] Link to primary stitches
-- [ ] Add base dimensions and characteristics
+### 1.2 Yarns Inventory ✅
+- [x] Define yarn schema
+- [x] Populate 14 yarns with full metadata
+- [x] Shop screenshots + physical photos
+- [x] Price, weight, purchase info
 
-### Task 3.3: Populate Pieces
-- [ ] Create all 8 pieces with full metadata
-- [ ] Extract dates from photo filenames
-- [ ] Estimate work hours
-- [ ] Set initial status (available/sold/gifted)
-- [ ] Link to styles and stitches
+### 1.3 Pieces Collection ✅
+- [x] Define piece schema with work_status + destination
+- [x] Populate 13 pieces
+- [x] Organize photos into folders
+- [x] Link yarns_used and stitches_used
 
-### Task 3.4: Organize Photos
-- [ ] Rename all photos
-- [ ] Move to piece subfolders
-- [ ] Remove duplicates
-- [ ] Update JSON references
-
----
-
-## Workflow for New Items (Future)
-
-When creating a new piece:
-
-```
-1. PHOTO INTAKE
-   └── Add photos to images/pieces/inbox/
-
-2. CLASSIFY (manual or assisted)
-   ├── Identify stitch → STITCH-ID
-   ├── Match to existing style OR create new → STYLE-ID
-   └── Extract date from filename
-
-3. CREATE ITEM
-   ├── Run: python src/create_piece.py --style STYLE-002 --color "Navy Blue"
-   ├── Auto-assigns: PIECE-009
-   └── Creates stub in pieces.json
-
-4. RENAME & ORGANIZE PHOTOS
-   ├── Run: python src/rename_photos.py --piece PIECE-009
-   └── Moves to images/pieces/PIECE-009/
-
-5. COMPLETE DATA
-   └── Fill in: dimensions, work_hours, price, status
-```
+### 1.4 Photo Organization ✅
+- [x] Create inbox folders for each entity type
+- [x] Define naming convention
+- [x] Process all inbox files
+- [x] Move to organized folders
 
 ---
 
-## File Structure (Updated)
+## Phase 2: Python Backend Core ✅ COMPLETE
+
+### 2.1 Project Structure
+
+```
+src/
+├── __init__.py
+├── config.py              # Configuration and constants
+├── models/
+│   ├── __init__.py
+│   ├── piece.py           # Piece data class
+│   ├── yarn.py            # Yarn data class
+│   └── stitch.py          # Stitch data class
+├── services/
+│   ├── __init__.py
+│   ├── data_service.py    # JSON CRUD operations
+│   ├── file_service.py    # File management
+│   ├── price_service.py   # Pricing calculations
+│   └── time_service.py    # Time calculations
+├── utils/
+│   ├── __init__.py
+│   ├── id_generator.py    # ID generation utilities
+│   ├── date_utils.py      # Date parsing/formatting
+│   └── photo_utils.py     # Photo metadata extraction
+└── cli/
+    ├── __init__.py
+    └── main.py            # Command-line interface
+```
+
+### 2.2 Core Modules
+
+#### 2.2.1 Data Service (`services/data_service.py`)
+```python
+class DataService:
+    """CRUD operations for JSON data files."""
+
+    def load_pieces() -> List[Piece]
+    def save_pieces(pieces: List[Piece])
+    def get_piece_by_id(piece_id: str) -> Piece
+    def create_piece(piece: Piece) -> str  # Returns new ID
+    def update_piece(piece: Piece)
+    def delete_piece(piece_id: str)  # Archives, doesn't delete
+
+    # Same pattern for yarns and stitches
+    def load_yarns() -> List[Yarn]
+    def load_stitches() -> List[Stitch]
+    # ... etc
+```
+
+#### 2.2.2 ID Generator (`utils/id_generator.py`)
+```python
+def get_next_id(entity_type: str) -> str:
+    """
+    Generate next sequential ID for entity type.
+
+    Args:
+        entity_type: 'PIECE', 'YARN', or 'STITCH'
+
+    Returns:
+        Next ID like 'PIECE-014', 'YARN-015', etc.
+    """
+```
+
+#### 2.2.3 Photo Utilities (`utils/photo_utils.py`)
+```python
+def extract_date_from_filename(filename: str) -> Optional[date]:
+    """Extract date from filename like '20251123_193645.jpg'"""
+
+def extract_exif_date(filepath: str) -> Optional[datetime]:
+    """Extract date from photo EXIF metadata"""
+
+def generate_photo_name(entity_id: str, sequence: int, descriptor: str, ext: str) -> str:
+    """Generate standardized photo filename"""
+```
+
+---
+
+## Phase 3: Pricing Algorithm ✅ COMPLETE
+
+**Implementation:** `src/services/price_service.py`
+
+### 3.1 Price Calculation Formula
+
+```
+SUGGESTED_PRICE = (MATERIAL_COST + LABOR_COST) × (1 + PROFIT_MARGIN) + COMPLEXITY_ADJUSTMENT
+
+Where:
+├── MATERIAL_COST = Σ (yarn.price_paid × balls_used)
+├── LABOR_COST = work_hours_actual × hourly_rate
+├── PROFIT_MARGIN = configurable (default 20%)
+└── COMPLEXITY_ADJUSTMENT = stitch_complexity_factor × size_factor
+```
+
+### 3.2 Complexity Factors
+
+| Stitch Category | Complexity Factor |
+|-----------------|-------------------|
+| basic | 1.0 |
+| textured | 1.15 |
+| lace | 1.25 |
+| colorwork | 1.30 |
+| specialty | 1.40 |
+
+| Piece Type | Size Factor |
+|------------|-------------|
+| hat | 0.8 |
+| cowl | 0.9 |
+| scarf | 1.0 |
+| shawl | 1.2 |
+| blanket | 1.5 |
+
+### 3.3 Price Service Implementation
+
+**File:** `src/services/price_service.py`
+
+```python
+from dataclasses import dataclass
+from typing import List, Optional
+from decimal import Decimal
+
+@dataclass
+class PriceConfig:
+    hourly_rate: Decimal = Decimal("8.00")
+    profit_margin: Decimal = Decimal("0.20")
+    min_margin: Decimal = Decimal("0.10")
+    round_to: int = 5  # Round to nearest 5€
+
+@dataclass
+class PriceBreakdown:
+    material_cost: Decimal
+    labor_cost: Decimal
+    subtotal: Decimal
+    complexity_adjustment: Decimal
+    profit_margin: Decimal
+    suggested_price: Decimal
+    rounded_price: Decimal
+
+class PriceService:
+    """Calculate suggested prices for pieces."""
+
+    def __init__(self, config: PriceConfig = None):
+        self.config = config or PriceConfig()
+
+    def calculate_material_cost(self, piece_id: str) -> Decimal:
+        """
+        Calculate total material cost from yarns_used.
+
+        Returns: Sum of (yarn.price_paid * balls_used) for each yarn
+        """
+
+    def calculate_labor_cost(self, piece_id: str) -> Decimal:
+        """
+        Calculate labor cost from work hours.
+
+        Returns: work_hours_actual * hourly_rate
+        """
+
+    def get_complexity_factor(self, piece_id: str) -> Decimal:
+        """
+        Calculate complexity based on stitches used.
+
+        Returns: Average complexity of all stitches used
+        """
+
+    def get_size_factor(self, piece_type: str) -> Decimal:
+        """Get size adjustment factor for piece type."""
+
+    def calculate_price(self, piece_id: str) -> PriceBreakdown:
+        """
+        Calculate full price breakdown for a piece.
+
+        Returns: PriceBreakdown with all cost components
+        """
+
+    def suggest_price_range(self, piece_id: str) -> tuple[Decimal, Decimal]:
+        """
+        Suggest min/max price range based on similar pieces.
+
+        Returns: (min_price, max_price) tuple
+        """
+
+    def compare_to_market(self, piece_id: str) -> dict:
+        """
+        Compare suggested price to similar sold pieces.
+
+        Returns: Dict with avg_sold_price, price_difference, recommendation
+        """
+```
+
+### 3.4 Example Price Calculation
+
+```
+Piece: PIECE-003 (V-Stitch Scarf with Fringe - Taupe)
+├── Material Cost:
+│   └── YARN-013: 1 ball × €5.00 = €5.00
+├── Labor Cost:
+│   └── 8 hours × €8.00 = €64.00
+├── Subtotal: €69.00
+├── Complexity:
+│   └── V-Stitch (lace) = 1.25 factor
+│   └── Scarf = 1.0 size factor
+│   └── Adjustment: €69.00 × 0.25 = €17.25
+├── Adjusted: €86.25
+├── Profit (20%): €17.25
+├── Total: €103.50
+└── Suggested (rounded): €105.00
+```
+
+---
+
+## Phase 4: File Management Automation ✅ COMPLETE
+
+**Implementation:** `src/cli/` module with rename_files.py, data_entry.py, process_inbox.py
+
+### 4.1 Purpose
+
+Replace AI-dependent tasks with standalone Python scripts that can run without Claude API access.
+
+### 4.2 Scripts to Implement
+
+#### 4.2.1 File Renamer (`src/cli/rename_files.py`)
+
+```python
+"""
+Rename files in inbox to standardized format.
+
+Usage:
+    python -m src.cli.rename_files --entity piece --id PIECE-014
+    python -m src.cli.rename_files --entity yarn --id YARN-015 --files photo1.jpg photo2.jpg
+"""
+
+def rename_inbox_files(entity_type: str, entity_id: str, files: List[str] = None):
+    """
+    Rename files from inbox to entity folder with proper naming.
+
+    1. Scan inbox folder for files (or use provided list)
+    2. Generate new names: {ID}_{seq}_{descriptor}.{ext}
+    3. Move to entity folder: images/{entity_type}/{entity_id}/
+    4. Update JSON data with new photo references
+    """
+```
+
+#### 4.2.2 Data Entry CLI (`src/cli/data_entry.py`)
+
+```python
+"""
+Interactive CLI for creating/updating data entries.
+
+Usage:
+    python -m src.cli.data_entry create piece
+    python -m src.cli.data_entry update yarn YARN-012
+    python -m src.cli.data_entry list pieces --status for_sale
+"""
+
+def create_piece_interactive():
+    """
+    Interactive prompts to create a new piece entry.
+
+    Prompts for:
+    - Name, type, color
+    - Yarns used (select from existing)
+    - Stitches used (select from existing)
+    - Work status, destination
+    - Dimensions, hook size
+    """
+
+def create_yarn_interactive():
+    """Interactive prompts for new yarn entry."""
+
+def create_stitch_interactive():
+    """Interactive prompts for new stitch entry."""
+```
+
+#### 4.2.3 Inbox Processor (`src/cli/process_inbox.py`)
+
+```python
+"""
+Process all inbox folders and organize files.
+
+Usage:
+    python -m src.cli.process_inbox --all
+    python -m src.cli.process_inbox --entity pieces
+"""
+
+def process_inbox(entity_type: str = None):
+    """
+    Scan inbox folders and process new files.
+
+    1. List files in inbox
+    2. Extract metadata (date from filename, EXIF)
+    3. Prompt user for entity assignment
+    4. Generate ID if new entity
+    5. Rename and move files
+    6. Update JSON data
+    """
+```
+
+#### 4.2.4 Time Calculator (`src/services/time_service.py`)
+
+```python
+"""
+Calculate work time from sessions and estimate total time.
+"""
+
+@dataclass
+class WorkSession:
+    date: date
+    hours: float
+    notes: Optional[str] = None
+
+class TimeService:
+    """Calculate and estimate work times."""
+
+    def calculate_total_hours(self, sessions: List[WorkSession]) -> float:
+        """Sum all session hours."""
+
+    def estimate_remaining_hours(self, piece_id: str) -> float:
+        """
+        Estimate remaining hours based on:
+        - Similar completed pieces
+        - Current progress percentage
+        - Style average hours
+        """
+
+    def get_style_average_hours(self, style_id: str) -> float:
+        """Calculate average hours for all pieces of a style."""
+
+    def predict_completion_date(self, piece_id: str, hours_per_week: float) -> date:
+        """Predict when piece will be finished."""
+```
+
+### 4.3 Automation Summary
+
+| Current (AI-Assisted) | Automated Script | Functionality |
+|----------------------|------------------|---------------|
+| Photo analysis | `process_inbox.py` | File metadata extraction |
+| File renaming | `rename_files.py` | Standardized naming |
+| Data creation | `data_entry.py` | Interactive CLI prompts |
+| Price calculation | `price_service.py` | Algorithm-based pricing |
+| Time estimation | `time_service.py` | Session-based calculation |
+
+---
+
+## Phase 5: Standalone Desktop Application
+
+### 5.1 Technology Stack
+
+| Layer | Technology | Reason |
+|-------|------------|--------|
+| Frontend | React + TypeScript | Modern, component-based UI |
+| Desktop Wrapper | Electron | Cross-platform desktop app |
+| Backend | Python (embedded) | Existing logic reuse |
+| Database | JSON files (local) | Simple, portable, no server |
+| IPC | Electron IPC | Frontend ↔ Python communication |
+
+### 5.2 Application Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Electron App                          │
+├─────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────────┐   │
+│  │              React Frontend                       │   │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐           │   │
+│  │  │ Pieces  │ │  Yarns  │ │Stitches │           │   │
+│  │  │  View   │ │  View   │ │  View   │           │   │
+│  │  └────┬────┘ └────┬────┘ └────┬────┘           │   │
+│  │       └───────────┼───────────┘                 │   │
+│  │                   ▼                             │   │
+│  │           ┌─────────────┐                       │   │
+│  │           │  API Layer  │ (Electron IPC)        │   │
+│  │           └──────┬──────┘                       │   │
+│  └──────────────────┼──────────────────────────────┘   │
+│                     ▼                                   │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │           Python Backend (Embedded)              │   │
+│  │  ┌──────────────┐  ┌──────────────┐            │   │
+│  │  │ Data Service │  │Price Service │            │   │
+│  │  └──────────────┘  └──────────────┘            │   │
+│  │  ┌──────────────┐  ┌──────────────┐            │   │
+│  │  │ File Service │  │ Time Service │            │   │
+│  │  └──────────────┘  └──────────────┘            │   │
+│  └─────────────────────────────────────────────────┘   │
+│                     ▼                                   │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │              Local File System                   │   │
+│  │  data/*.json          images/*/*                │   │
+│  └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 5.3 Frontend Components
+
+```
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── PhotoGallery.tsx
+│   │   │   ├── EntityCard.tsx
+│   │   │   ├── FilterBar.tsx
+│   │   │   └── SearchInput.tsx
+│   │   ├── pieces/
+│   │   │   ├── PieceList.tsx
+│   │   │   ├── PieceDetail.tsx
+│   │   │   ├── PieceForm.tsx
+│   │   │   └── PriceCalculator.tsx
+│   │   ├── yarns/
+│   │   │   ├── YarnList.tsx
+│   │   │   ├── YarnDetail.tsx
+│   │   │   └── YarnForm.tsx
+│   │   └── stitches/
+│   │       ├── StitchList.tsx
+│   │       ├── StitchDetail.tsx
+│   │       └── StitchForm.tsx
+│   ├── hooks/
+│   │   ├── useData.ts
+│   │   ├── usePhotos.ts
+│   │   └── usePricing.ts
+│   ├── services/
+│   │   └── ipcService.ts      # Electron IPC calls
+│   ├── types/
+│   │   ├── piece.ts
+│   │   ├── yarn.ts
+│   │   └── stitch.ts
+│   └── App.tsx
+```
+
+### 5.4 Key Features
+
+1. **Dashboard**
+   - Overview of inventory counts
+   - Recent pieces
+   - Pieces by status (for_sale, in_progress)
+   - Quick stats (total value, avg price)
+
+2. **Pieces View**
+   - Grid/list toggle with photo thumbnails
+   - Filter by status, type, stitch, yarn
+   - Sort by date, price, name
+   - Detail view with full photo gallery
+   - Inline price calculator
+
+3. **Yarns View**
+   - Inventory grid with color swatches
+   - Stock levels (quantity_owned)
+   - Filter by material, weight, color
+   - "Used in" pieces linking
+
+4. **Stitches View**
+   - Tutorial reference gallery
+   - Difficulty filtering
+   - "Used in" pieces linking
+   - Link to external tutorials
+
+5. **Data Entry Forms**
+   - Create/edit all entity types
+   - Photo upload with drag-drop
+   - Auto-rename on upload
+   - Validation feedback
+
+6. **Price Calculator**
+   - Interactive price estimation
+   - Breakdown visualization
+   - Comparison to similar pieces
+   - "What-if" scenarios
+
+---
+
+## Phase 6: Online Deployment (Optional)
+
+### 6.1 Architecture Changes for Online
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                     CLIENT                               │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │         React Frontend (Browser)                 │   │
+│  │              ↓ HTTP/REST                         │   │
+│  └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│                     SERVER                               │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │         FastAPI Backend (Python)                 │   │
+│  │  ┌──────────────────────────────────────────┐   │   │
+│  │  │            REST API Endpoints             │   │   │
+│  │  │  GET  /api/pieces                         │   │   │
+│  │  │  POST /api/pieces                         │   │   │
+│  │  │  GET  /api/pieces/{id}                    │   │   │
+│  │  │  PUT  /api/pieces/{id}                    │   │   │
+│  │  │  DELETE /api/pieces/{id}                  │   │   │
+│  │  │  POST /api/pieces/{id}/calculate-price    │   │   │
+│  │  │  ... same for yarns, stitches             │   │   │
+│  │  └──────────────────────────────────────────┘   │   │
+│  └─────────────────────────────────────────────────┘   │
+│                         │                               │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │              Database (PostgreSQL)               │   │
+│  │         or JSON files with file locking          │   │
+│  └─────────────────────────────────────────────────┘   │
+│                         │                               │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │           File Storage (S3 or local)             │   │
+│  │                  images/*/*                      │   │
+│  └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 6.2 API Endpoints
+
+```
+# Pieces
+GET    /api/pieces                    # List all pieces
+GET    /api/pieces?status=for_sale    # Filter by status
+GET    /api/pieces/{id}               # Get single piece
+POST   /api/pieces                    # Create piece
+PUT    /api/pieces/{id}               # Update piece
+DELETE /api/pieces/{id}               # Archive piece
+GET    /api/pieces/{id}/photos        # Get piece photos
+POST   /api/pieces/{id}/photos        # Upload photo
+POST   /api/pieces/{id}/calculate     # Calculate price
+
+# Yarns
+GET    /api/yarns
+GET    /api/yarns/{id}
+POST   /api/yarns
+PUT    /api/yarns/{id}
+DELETE /api/yarns/{id}
+
+# Stitches
+GET    /api/stitches
+GET    /api/stitches/{id}
+POST   /api/stitches
+PUT    /api/stitches/{id}
+
+# Utilities
+POST   /api/inbox/process             # Process inbox files
+GET    /api/stats                     # Get statistics
+POST   /api/price/calculate           # Calculate price for params
+```
+
+### 6.3 Deployment Options
+
+| Option | Pros | Cons |
+|--------|------|------|
+| **Vercel + Railway** | Easy deploy, free tier | Limited storage |
+| **DigitalOcean** | Full control, affordable | More setup |
+| **Self-hosted (Raspberry Pi)** | Free, local | Maintenance |
+| **Heroku** | Easy, familiar | Cost for dynos |
+
+### 6.4 Security Considerations
+
+- Authentication (if multi-user)
+- CORS configuration
+- File upload validation
+- Rate limiting
+- HTTPS required
+
+---
+
+## Technical Architecture
+
+### Data Flow
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   INBOX     │────▶│  PROCESSOR  │────▶│    DATA     │
+│  (photos)   │     │  (Python)   │     │   (JSON)    │
+└─────────────┘     └─────────────┘     └─────────────┘
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │   IMAGES    │
+                    │ (organized) │
+                    └─────────────┘
+```
+
+### Configuration File
+
+**File:** `src/config.py`
+
+```python
+from pathlib import Path
+from dataclasses import dataclass
+from decimal import Decimal
+
+@dataclass
+class Config:
+    # Paths
+    BASE_DIR: Path = Path(__file__).parent.parent
+    DATA_DIR: Path = BASE_DIR / "data"
+    IMAGES_DIR: Path = BASE_DIR / "images"
+
+    # Data files
+    PIECES_FILE: Path = DATA_DIR / "pieces.json"
+    YARNS_FILE: Path = DATA_DIR / "yarns.json"
+    STITCHES_FILE: Path = DATA_DIR / "stitches.json"
+
+    # Pricing defaults
+    HOURLY_RATE: Decimal = Decimal("8.00")
+    PROFIT_MARGIN: Decimal = Decimal("0.20")
+    MIN_MARGIN: Decimal = Decimal("0.10")
+    PRICE_ROUND_TO: int = 5
+
+    # Complexity factors
+    STITCH_COMPLEXITY = {
+        "basic": Decimal("1.0"),
+        "textured": Decimal("1.15"),
+        "lace": Decimal("1.25"),
+        "colorwork": Decimal("1.30"),
+        "specialty": Decimal("1.40"),
+    }
+
+    SIZE_FACTORS = {
+        "hat": Decimal("0.8"),
+        "cowl": Decimal("0.9"),
+        "scarf": Decimal("1.0"),
+        "shawl": Decimal("1.2"),
+        "blanket": Decimal("1.5"),
+        "other": Decimal("1.0"),
+    }
+```
+
+---
+
+## File Structure
 
 ```
 crochet/
-├── CLAUDE.md
-├── PLAN.md                    # This file
-├── README.md
+├── CLAUDE.md                    # ✅ AI assistant documentation
+├── PLAN.md                      # ✅ This file
+├── README.md                    # Project overview
+├── requirements.txt             # ✅ Python dependencies
+│
 ├── data/
-│   ├── pieces.json
-│   ├── yarns.json
-│   ├── stitches.json
-│   ├── styles.json            # NEW
+│   ├── pieces.json              # ✅ 13 pieces
+│   ├── yarns.json               # ✅ 14 yarns
+│   ├── stitches.json            # ✅ 15 stitches
+│   ├── styles.json              # 📋 Planned
 │   └── schemas/
 │       ├── piece.schema.json
 │       ├── yarn.schema.json
-│       ├── stitch.schema.json
-│       └── style.schema.json  # NEW
+│       └── stitch.schema.json
+│
 ├── images/
 │   ├── pieces/
-│   │   ├── inbox/             # NEW - for unsorted photos
-│   │   ├── PIECE-001/
-│   │   ├── PIECE-002/
+│   │   ├── inbox/               # ✅ For new photos
+│   │   ├── PIECE-001/           # ✅ Organized
 │   │   └── ...
 │   ├── yarns/
+│   │   ├── inbox/               # ✅ For new photos
+│   │   ├── YARN-001/            # ✅ Organized
+│   │   └── ...
 │   ├── stitches/
-│   └── marketing/
-├── src/                       # NEW
-│   ├── __init__.py
-│   ├── extract_metadata.py
-│   ├── rename_photos.py
-│   ├── create_piece.py
-│   └── classify_stitch.py
+│   │   ├── inbox/               # ✅ For new photos
+│   │   ├── STITCH-001/          # ✅ Organized
+│   │   └── ...
+│   ├── reference/
+│   │   └── tools/               # ✅ Crochet hooks
+│   └── marketing/               # 📋 For sale images
+│
+├── src/                         # ✅ Python backend
+│   ├── __init__.py              # ✅
+│   ├── config.py                # ✅
+│   ├── models/
+│   │   ├── __init__.py          # ✅
+│   │   ├── piece.py             # ✅
+│   │   ├── yarn.py              # ✅
+│   │   └── stitch.py            # ✅
+│   ├── services/
+│   │   ├── __init__.py          # ✅
+│   │   ├── data_service.py      # ✅
+│   │   ├── price_service.py     # ✅
+│   │   └── time_service.py      # ✅
+│   ├── utils/
+│   │   ├── __init__.py          # ✅
+│   │   ├── id_generator.py      # ✅
+│   │   ├── date_utils.py        # ✅
+│   │   └── photo_utils.py       # ✅
+│   └── cli/
+│       ├── __init__.py          # ✅
+│       ├── main.py              # ✅
+│       ├── rename_files.py      # ✅
+│       ├── data_entry.py        # ✅
+│       └── process_inbox.py     # ✅
+│
+├── frontend/                    # 📋 React app (Phase 5)
+│   ├── package.json
+│   ├── src/
+│   └── public/
+│
 └── docs/
+    └── care-instructions/
 ```
 
 ---
 
-## Tomorrow's Session Checklist
+## Development Priority Order
 
-### Morning: Foundation
-- [ ] Review and confirm stitch definitions
-- [ ] Create `styles.json` schema and initial data
-- [ ] Assign piece IDs to all 8 pieces
-- [ ] Map photos to pieces
-
-### Afternoon: Data Entry
-- [ ] Update `pieces.json` with full metadata
-- [ ] Extract dates from photo filenames
-- [ ] Link pieces → styles → stitches
-
-### Scripts (if time permits)
-- [ ] Create `src/rename_photos.py`
-- [ ] Execute photo renaming
-- [ ] Organize into folders
+1. ~~**Phase 2.2** - Core Python modules (data_service, models)~~ ✅ DONE
+2. ~~**Phase 3** - Pricing algorithm implementation~~ ✅ DONE
+3. ~~**Phase 4** - File automation scripts~~ ✅ DONE
+4. ~~**Phase 2 complete** - Time service, all utilities~~ ✅ DONE
+5. **Phase 5** - React frontend + Electron wrapper (NEXT)
+6. **Phase 6** - Online deployment (optional)
 
 ---
 
-## Decisions Made
+## Decisions Log
 
-1. **Naming for variations:** Item names INCLUDE color
-   - Example: "V-Stitch Scarf with Fringe - Beige"
-   - Style name stays generic, piece name includes color
-
-2. **ID sequence:** Sequential by entry (not chronological)
-   - Simpler to manage
-   - Use `date_started` field for chronological queries
-   - Note: Changing IDs later is difficult (photo renames, JSON refs)
-
-3. **Work hours tracking:** Track ALL for learning/prediction
-   - `work_hours_estimated`: Initial estimate before starting
-   - `work_sessions`: Array of {date, hours} for per-session tracking
-   - `work_hours_actual`: Calculated sum of sessions (actual time spent)
-   - Over time, compare estimated vs actual to improve predictions
-   - Style can store `avg_hours` based on completed pieces
-
-4. **Pricing strategy:** Per ITEM (not per style)
-   - Each piece has its own `price` field
-   - Style can have `base_price` as suggestion only
-
----
-
-## Schema Updates Needed
-
-### New: style.schema.json
-```json
-{
-  "id": "STYLE-001",
-  "name": "V-Stitch Scarf with Fringe",
-  "piece_type": "scarf",
-  "primary_stitch_id": "STITCH-010",
-  "secondary_stitches": [],
-  "has_fringe": true,
-  "base_dimensions": { "width_cm": 25, "length_cm": 180 },
-  "difficulty": "beginner",
-  "estimated_hours": 15,
-  "avg_hours_actual": null,
-  "pieces_completed": 0,
-  "base_price": 35.00,
-  "notes": "Classic design, very popular"
-}
-```
-
-**Time Prediction Learning:**
-- `estimated_hours`: Initial estimate for this style
-- `avg_hours_actual`: Auto-calculated average from completed pieces
-- `pieces_completed`: Count of finished pieces (for averaging)
-- Formula: `avg_hours_actual = sum(piece.work_hours_actual) / pieces_completed`
-- Over time, use `avg_hours_actual` instead of `estimated_hours` for predictions
-
-### Update: piece.schema.json
-Add fields:
-```json
-"style_id": {
-  "type": "string",
-  "pattern": "^STYLE-[0-9]{3}$",
-  "description": "Reference to parent style"
-},
-"color": {
-  "type": "string",
-  "description": "Primary color of the piece"
-},
-"work_hours_estimated": {
-  "type": "number",
-  "description": "Initial estimate before starting (for prediction learning)"
-},
-"work_sessions": {
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "date": { "type": "string", "format": "date" },
-      "hours": { "type": "number" }
-    }
-  },
-  "description": "Individual work sessions"
-},
-"work_hours_actual": {
-  "type": "number",
-  "description": "Actual total (sum of sessions)"
-},
-"yarns_used": {
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "yarn_id": { "type": "string", "pattern": "^YARN-[0-9]{3}$" },
-      "balls_used": { "type": "number" }
-    }
-  },
-  "description": "Yarns with quantity (for cost calculation)"
-},
-"material_cost": {
-  "type": "number",
-  "description": "Calculated cost of materials (EUR)"
-},
-"suggested_price": {
-  "type": "number",
-  "description": "Auto-calculated suggested price"
-},
-"price": {
-  "type": "number",
-  "description": "Actual selling price set by user"
-}
-```
+| Date | Decision | Rationale |
+|------|----------|-----------|
+| Jan 16 | Use JSON for data storage | Simple, portable, no DB setup |
+| Jan 16 | Sequential IDs (001-999) | Clean, sufficient for personal use |
+| Jan 16 | Photos in entity folders | Easy browsing, backup |
+| Jan 17 | Rename Item → Piece | Clearer terminology |
+| Jan 17 | Two-status system | work_status + destination |
+| Jan 17 | Hookfully for stitch names | Standardized reference |
+| Jan 17 | Archive instead of delete | Preserve history |
+| Jan 17 | Python for backend | Existing skills, good for algorithms |
+| Jan 17 | React for frontend | Modern, good ecosystem |
+| Jan 17 | Electron for desktop | Cross-platform, web tech reuse |
 
 ---
 
