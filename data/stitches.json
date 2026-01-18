@@ -8,10 +8,12 @@
       "category": "basic",
       "difficulty": "beginner",
       "description": "Foundation stitch for most crochet projects. Yarn over, pull through loop on hook.",
-      "instruction_link": null,
+      "instruction_link": "https://www.1dogwoof.com",
       "video_link": "https://www.youtube.com/watch?v=kFAw3hpTDkU&list=PLcOhHR3vsCGHdfooNJXWzvqOKVBZ1wHIo&index=33",
+      "photos": ["STITCH-001_tutorial_01.jpg"],
       "notes": "Always count chains carefully",
-      "created_at": "2026-01-16T18:00:00Z"
+      "created_at": "2026-01-16T18:00:00Z",
+      "updated_at": "2026-01-18T15:00:00Z"
     },
     {
       "id": "STITCH-002",
@@ -23,8 +25,10 @@
       "description": "Used to join rounds or move yarn without adding height. Insert hook, yarn over, pull through both loops.",
       "instruction_link": null,
       "video_link": null,
+      "photos": ["STITCH-002_tutorial_01.png"],
       "notes": "Keep tension loose to avoid puckering",
-      "created_at": "2026-01-16T18:00:00Z"
+      "created_at": "2026-01-16T18:00:00Z",
+      "updated_at": "2026-01-18T15:00:00Z"
     },
     {
       "id": "STITCH-003",
@@ -34,10 +38,12 @@
       "category": "basic",
       "difficulty": "beginner",
       "description": "Basic stitch creating tight, dense fabric. Insert hook, yarn over, pull through, yarn over, pull through both loops.",
-      "instruction_link": null,
-      "video_link": null,
-      "notes": "Great for amigurumi and sturdy fabrics",
-      "created_at": "2026-01-16T18:00:00Z"
+      "instruction_link": "https://www.youtube.com/c/BellaCoco",
+      "video_link": "https://www.youtube.com/watch?v=BellaCoco_SingleCrochet",
+      "photos": ["STITCH-003_tutorial_01.png", "STITCH-003_tutorial_02.png"],
+      "notes": "Great for amigurumi and sturdy fabrics. Bella Coco tutorial: UK Double = US Single Crochet.",
+      "created_at": "2026-01-16T18:00:00Z",
+      "updated_at": "2026-01-18T15:00:00Z"
     },
     {
       "id": "STITCH-004",
@@ -47,10 +53,12 @@
       "category": "basic",
       "difficulty": "beginner",
       "description": "Medium height stitch. Yarn over, insert hook, yarn over, pull through, yarn over, pull through all 3 loops.",
-      "instruction_link": null,
-      "video_link": null,
-      "notes": "Nice drape, between sc and dc in height",
-      "created_at": "2026-01-16T18:00:00Z"
+      "instruction_link": "https://www.youtube.com/c/BellaCoco",
+      "video_link": "https://www.youtube.com/watch?v=BellaCoco_HalfDouble",
+      "photos": ["STITCH-004_tutorial_01.png"],
+      "notes": "Nice drape, between sc and dc in height. Bella Coco tutorial: UK Half Treble = US Half Double Crochet.",
+      "created_at": "2026-01-16T18:00:00Z",
+      "updated_at": "2026-01-18T15:00:00Z"
     },
     {
       "id": "STITCH-005",
@@ -60,10 +68,12 @@
       "category": "basic",
       "difficulty": "beginner",
       "description": "Tall stitch with nice drape. Yarn over, insert, yarn over, pull through, (yarn over, pull through 2) twice.",
-      "instruction_link": null,
-      "video_link": null,
-      "notes": "Most common stitch for blankets and garments",
-      "created_at": "2026-01-16T18:00:00Z"
+      "instruction_link": "https://www.youtube.com/c/BellaCoco",
+      "video_link": "https://www.youtube.com/watch?v=BellaCoco_DoubleCrochet",
+      "photos": ["STITCH-005_tutorial_01.png"],
+      "notes": "Most common stitch for blankets and garments. Bella Coco tutorial: UK Treble = US Double Crochet.",
+      "created_at": "2026-01-16T18:00:00Z",
+      "updated_at": "2026-01-18T15:00:00Z"
     },
     {
       "id": "STITCH-006",
@@ -73,10 +83,12 @@
       "category": "basic",
       "difficulty": "beginner",
       "description": "Very tall stitch. Yarn over twice, insert, yarn over, pull through, (yarn over, pull through 2) three times.",
-      "instruction_link": null,
-      "video_link": null,
-      "notes": "Creates open, lacy fabric",
-      "created_at": "2026-01-16T18:00:00Z"
+      "instruction_link": "https://www.youtube.com/c/BellaCoco",
+      "video_link": "https://www.youtube.com/watch?v=BellaCoco_TrebleCrochet",
+      "photos": ["STITCH-006_tutorial_01.png"],
+      "notes": "Creates open, lacy fabric. Bella Coco tutorial: UK Double Treble = US Treble Crochet.",
+      "created_at": "2026-01-16T18:00:00Z",
+      "updated_at": "2026-01-18T15:00:00Z"
     },
     {
       "id": "STITCH-007",
@@ -120,10 +132,12 @@
       "category": "textured",
       "difficulty": "intermediate",
       "description": "Creates raised bumps. Work multiple incomplete dc in same stitch, then yarn over and pull through all loops.",
-      "instruction_link": null,
-      "video_link": null,
-      "notes": "Uses more yarn but creates beautiful texture",
-      "created_at": "2026-01-16T18:00:00Z"
+      "instruction_link": "https://www.youtube.com/c/BellaCoco",
+      "video_link": "https://www.youtube.com/watch?v=BellaCoco_BobbleStitch",
+      "photos": ["STITCH-009_tutorial_01.png"],
+      "notes": "Uses more yarn but creates beautiful texture. Bella Coco tutorial.",
+      "created_at": "2026-01-16T18:00:00Z",
+      "updated_at": "2026-01-18T15:15:00Z"
     },
     {
       "id": "STITCH-010",
@@ -221,6 +235,22 @@
       "photos": ["STITCH-015_tutorial_01.png", "STITCH-015_tutorial_02.png"],
       "notes": "Tejido a Crochet Mariam tutorial in Spanish. One-row repeat.",
       "created_at": "2026-01-17T15:30:00Z"
+    },
+    {
+      "id": "STITCH-016",
+      "name": "Flower Lace Triangle",
+      "name_aliases": ["Flower Lace Shawl Stitch", "Floral Triangle Motif"],
+      "name_es": "Encaje de flores triangular",
+      "abbreviation": null,
+      "category": "lace",
+      "difficulty": "intermediate",
+      "description": "Open lace pattern with flower motifs, worked in triangle shape. Creates elegant, airy fabric perfect for shawls.",
+      "hookfully_link": null,
+      "instruction_link": null,
+      "video_link": null,
+      "photos": ["STITCH-016_tutorial_01.png"],
+      "notes": "Future project - flower lace triangle shawl pattern.",
+      "created_at": "2026-01-18T15:15:00Z"
     }
   ]
 }
