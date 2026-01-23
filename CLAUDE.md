@@ -524,6 +524,30 @@ Instead of deleting records, mark them as `archived: true`. This preserves:
 
 **Next session:** Implement Phase 1 (stitches → styles → pieces → photo rename)
 
+### 2026-01-23: Etsy Shop Setup & Inbox Processing
+- Created Etsy profile (g3i48ryqg11khv71) and shop (Laguh)
+- Listed PIECE-012 (Shell Stitch Scarf - Biscotti) on Etsy
+- Updated PIECE-012 with sale_platform: "Etsy" and sale_link
+- Created catchy title/description for PIECE-006 (V-Stitch Scarf - Forest Green) for future listing
+- Updated frontend PieceCard.tsx to display Piece ID
+- Updated parent CLAUDE.md with default working directory instruction
+
+**Inbox Processing:**
+- Processed 10 piece photos from inbox (no duplicates):
+  - PIECE-006: Added 6 new portrait/worn photos
+  - PIECE-012: Added 4 new worn photos
+- Processed 12 stitch screenshots from inbox:
+  - Updated STITCH-009 (Bobble Stitch): +1 photo
+  - Updated STITCH-016 (Flower Lace Triangle): +3 photos
+  - Created STITCH-017 (Solomon's Knot)
+  - Created STITCH-018 (Lacy Corner to Corner)
+  - Created STITCH-019 (Mesh Stitch)
+  - Created STITCH-020 (Easy Lace Stitch)
+
+**Clarification on duplicate detection:**
+- Only flag exact duplicate files for deletion
+- Keep different frames/angles from same tutorial (valuable for learning)
+
 ---
 
 ## Inbox Processing Instructions

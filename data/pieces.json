@@ -98,7 +98,7 @@
       "sold_date": null,
       "sold_price": null,
       "yarns_used": [
-        "YARN-013"
+        "YARN-008"
       ],
       "stitches_used": [
         "STITCH-010"
@@ -108,7 +108,7 @@
       "archived_date": null,
       "archived_reason": null,
       "created_at": "2026-01-17T15:40:00+00:00",
-      "updated_at": "2026-01-18T15:42:06.480018"
+      "updated_at": "2026-01-18T22:11:43.778873"
     },
     {
       "id": "PIECE-004",
@@ -200,7 +200,13 @@
       "photos": [
         "PIECE-006_01_worn.jpg",
         "PIECE-006_02_flat.jpg",
-        "PIECE-006_03_detail.jpeg"
+        "PIECE-006_03_detail.jpeg",
+        "PIECE-006_04_portrait1.jpeg",
+        "PIECE-006_05_portrait2.jpeg",
+        "PIECE-006_06_portrait3.jpeg",
+        "PIECE-006_07_worn2.jpeg",
+        "PIECE-006_08_worn3.jpeg",
+        "PIECE-006_09_portrait4.jpeg"
       ],
       "price": null,
       "suggested_price": null,
@@ -299,15 +305,15 @@
     {
       "id": "PIECE-009",
       "name": "Shell Stitch Swatch - Cream",
-      "type": "other",
-      "work_status": "finished",
-      "destination": "for_self",
+      "type": "scarf",
+      "work_status": "in_progress",
+      "destination": "for_sale",
       "dimensions": null,
-      "date_started": null,
+      "date_started": "2026-01-16",
       "date_finished": null,
-      "work_hours": null,
+      "work_hours": 6,
       "work_sessions": [],
-      "hook_size_mm": null,
+      "hook_size_mm": 4,
       "photos": [
         "PIECE-009_01_swatch.jpeg"
       ],
@@ -330,7 +336,7 @@
       "archived_date": null,
       "archived_reason": null,
       "created_at": "2026-01-17T15:40:00+00:00",
-      "updated_at": null
+      "updated_at": "2026-01-18T22:14:08.214353"
     },
     {
       "id": "PIECE-010",
@@ -376,13 +382,13 @@
       "name": "Beanie Hat - Cream Chenille",
       "type": "hat",
       "work_status": "finished",
-      "destination": "for_self",
+      "destination": "in_use",
       "dimensions": null,
       "date_started": null,
       "date_finished": null,
-      "work_hours": null,
+      "work_hours": 6,
       "work_sessions": [],
-      "hook_size_mm": 6.0,
+      "hook_size_mm": 6,
       "photos": [
         "PIECE-011_01_hat.jpeg"
       ],
@@ -403,7 +409,7 @@
       "archived_date": null,
       "archived_reason": null,
       "created_at": "2026-01-17T15:40:00+00:00",
-      "updated_at": null
+      "updated_at": "2026-01-18T18:42:42.548428"
     },
     {
       "id": "PIECE-012",
@@ -411,24 +417,32 @@
       "type": "scarf",
       "work_status": "finished",
       "destination": "for_sale",
-      "dimensions": null,
-      "date_started": null,
-      "date_finished": null,
-      "work_hours": null,
+      "dimensions": {
+        "width_cm": 135,
+        "length_cm": 22,
+        "depth_cm": null
+      },
+      "date_started": "2026-01-10",
+      "date_finished": "2026-01-15",
+      "work_hours": 15,
       "work_sessions": [],
       "hook_size_mm": 4.5,
       "photos": [
         "PIECE-012_01_detail.jpeg",
         "PIECE-012_02_full.jpeg",
         "PIECE-012_03_detail2.jpeg",
-        "PIECE-012_04_flat.jpeg"
+        "PIECE-012_04_flat.jpeg",
+        "PIECE-012_05_worn1.jpeg",
+        "PIECE-012_06_worn2.jpeg",
+        "PIECE-012_07_worn3.jpeg",
+        "PIECE-012_08_worn4.jpeg"
       ],
       "price": null,
       "suggested_price": null,
       "material_cost": null,
       "gift_recipient": null,
-      "sale_platform": null,
-      "sale_link": null,
+      "sale_platform": "Etsy",
+      "sale_link": "https://www.etsy.com/listing/4444203613/crochet-scarf-beige",
       "sold_date": null,
       "sold_price": null,
       "yarns_used": [
@@ -437,12 +451,12 @@
       "stitches_used": [
         "STITCH-007"
       ],
-      "notes": "Biscotti/tan shell stitch scarf. Warm neutral color.",
+      "notes": "Biscotti/tan shell stitch scarf. Warm neutral color. Listed on Etsy shop Laguh.",
       "archived": false,
       "archived_date": null,
       "archived_reason": null,
       "created_at": "2026-01-17T15:40:00+00:00",
-      "updated_at": null
+      "updated_at": "2026-01-23T01:47:22.323301"
     },
     {
       "id": "PIECE-013",
@@ -483,6 +497,6 @@
   ],
   "_meta": {
     "next_id": 14,
-    "last_updated": "2026-01-18T15:42:06.480406"
+    "last_updated": "2026-01-23T01:47:22.324061"
   }
 }
