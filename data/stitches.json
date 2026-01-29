@@ -3,97 +3,143 @@
     {
       "id": "STITCH-001",
       "name": "Chain",
+      "name_aliases": [],
       "name_es": "Cadena",
       "abbreviation": "ch",
       "category": "basic",
       "difficulty": "beginner",
       "description": "Foundation stitch for most crochet projects. Yarn over, pull through loop on hook.",
+      "hookfully_link": null,
       "instruction_link": "https://www.1dogwoof.com",
       "video_link": "https://www.youtube.com/watch?v=kFAw3hpTDkU&list=PLcOhHR3vsCGHdfooNJXWzvqOKVBZ1wHIo&index=33",
-      "photos": ["STITCH-001_tutorial_01.jpg"],
+      "photos": [
+        "STITCH-001_tutorial_01.jpg"
+      ],
       "notes": "Always count chains carefully",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-18T15:00:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-18T15:00:00+00:00"
     },
     {
       "id": "STITCH-002",
       "name": "Slip Stitch",
+      "name_aliases": [],
       "name_es": "Punto deslizado",
       "abbreviation": "sl st",
       "category": "basic",
       "difficulty": "beginner",
       "description": "Used to join rounds or move yarn without adding height. Insert hook, yarn over, pull through both loops.",
+      "hookfully_link": null,
       "instruction_link": null,
       "video_link": null,
-      "photos": ["STITCH-002_tutorial_01.png"],
+      "photos": [
+        "STITCH-002_tutorial_01.png"
+      ],
       "notes": "Keep tension loose to avoid puckering",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-18T15:00:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-18T15:00:00+00:00"
     },
     {
       "id": "STITCH-003",
       "name": "Single Crochet",
+      "name_aliases": [],
       "name_es": "Punto bajo",
       "abbreviation": "sc",
       "category": "basic",
       "difficulty": "beginner",
       "description": "Basic stitch creating tight, dense fabric. Insert hook, yarn over, pull through, yarn over, pull through both loops.",
+      "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/BellaCoco",
       "video_link": "https://www.youtube.com/watch?v=BellaCoco_SingleCrochet",
-      "photos": ["STITCH-003_tutorial_01.png", "STITCH-003_tutorial_02.png"],
+      "photos": [
+        "STITCH-003_tutorial_01.png",
+        "STITCH-003_tutorial_02.png"
+      ],
       "notes": "Great for amigurumi and sturdy fabrics. Bella Coco tutorial: UK Double = US Single Crochet.",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-18T15:00:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-18T15:00:00+00:00"
     },
     {
       "id": "STITCH-004",
       "name": "Half Double Crochet",
+      "name_aliases": [],
       "name_es": "Media vareta",
       "abbreviation": "hdc",
       "category": "basic",
       "difficulty": "beginner",
       "description": "Medium height stitch. Yarn over, insert hook, yarn over, pull through, yarn over, pull through all 3 loops.",
+      "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/BellaCoco",
       "video_link": "https://www.youtube.com/watch?v=BellaCoco_HalfDouble",
-      "photos": ["STITCH-004_tutorial_01.png"],
+      "photos": [
+        "STITCH-004_tutorial_01.png"
+      ],
       "notes": "Nice drape, between sc and dc in height. Bella Coco tutorial: UK Half Treble = US Half Double Crochet.",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-18T15:00:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-18T15:00:00+00:00"
     },
     {
       "id": "STITCH-005",
       "name": "Double Crochet",
+      "name_aliases": [],
       "name_es": "Punto alto / Vareta",
       "abbreviation": "dc",
       "category": "basic",
       "difficulty": "beginner",
       "description": "Tall stitch with nice drape. Yarn over, insert, yarn over, pull through, (yarn over, pull through 2) twice.",
+      "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/BellaCoco",
       "video_link": "https://www.youtube.com/watch?v=BellaCoco_DoubleCrochet",
-      "photos": ["STITCH-005_tutorial_01.png"],
+      "photos": [
+        "STITCH-005_tutorial_01.png"
+      ],
       "notes": "Most common stitch for blankets and garments. Bella Coco tutorial: UK Treble = US Double Crochet.",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-18T15:00:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-18T15:00:00+00:00"
     },
     {
       "id": "STITCH-006",
       "name": "Treble Crochet",
+      "name_aliases": [],
       "name_es": "Punto alto doble",
       "abbreviation": "tr",
       "category": "basic",
       "difficulty": "beginner",
       "description": "Very tall stitch. Yarn over twice, insert, yarn over, pull through, (yarn over, pull through 2) three times.",
+      "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/BellaCoco",
       "video_link": "https://www.youtube.com/watch?v=BellaCoco_TrebleCrochet",
-      "photos": ["STITCH-006_tutorial_01.png"],
+      "photos": [
+        "STITCH-006_tutorial_01.png"
+      ],
       "notes": "Creates open, lacy fabric. Bella Coco tutorial: UK Double Treble = US Treble Crochet.",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-18T15:00:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-18T15:00:00+00:00"
     },
     {
       "id": "STITCH-007",
       "name": "Shell Stitch",
-      "name_aliases": ["Fan Stitch", "Punto Abanico"],
+      "name_aliases": [
+        "Fan Stitch",
+        "Punto Abanico"
+      ],
       "name_es": "Punto abanico",
       "abbreviation": "shell",
       "category": "lace",
@@ -102,15 +148,27 @@
       "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/OlgaPoltava",
       "video_link": "https://www.youtube.com/watch?v=OlgaPoltavaLacyStitch",
-      "photos": ["STITCH-007_tutorial_01.png", "STITCH-007_tutorial_02.png", "STITCH-007_tutorial_03.png", "STITCH-007_tutorial_04.png", "STITCH-007_tutorial_05.png", "STITCH-007_tutorial_06.png"],
+      "photos": [
+        "STITCH-007_tutorial_01.png",
+        "STITCH-007_tutorial_02.png",
+        "STITCH-007_tutorial_03.png",
+        "STITCH-007_tutorial_04.png",
+        "STITCH-007_tutorial_05.png",
+        "STITCH-007_tutorial_06.png"
+      ],
       "notes": "Beautiful for shawls and blanket edges. Olga Poltava tutorials excellent for this.",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-17T15:30:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-17T15:30:00+00:00"
     },
     {
       "id": "STITCH-008",
       "name": "Granny Square",
-      "name_aliases": ["Classic Granny Square"],
+      "name_aliases": [
+        "Classic Granny Square"
+      ],
       "name_es": "Cuadrado de la abuela",
       "abbreviation": null,
       "category": "specialty",
@@ -119,30 +177,46 @@
       "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/BellaCoco",
       "video_link": "https://www.youtube.com/watch?v=BellaCoco_GrannySquare",
-      "photos": ["STITCH-008_tutorial_01.png"],
+      "photos": [
+        "STITCH-008_tutorial_01.png"
+      ],
       "notes": "Perfect for using up scrap yarn. Bella Coco tutorial excellent for beginners.",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-17T15:30:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-17T15:30:00+00:00"
     },
     {
       "id": "STITCH-009",
       "name": "Bobble Stitch",
+      "name_aliases": [],
       "name_es": "Punto piña / Bobble",
       "abbreviation": "bob",
       "category": "textured",
       "difficulty": "intermediate",
       "description": "Creates raised bumps. Work multiple incomplete dc in same stitch, then yarn over and pull through all loops.",
+      "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/BellaCoco",
       "video_link": "https://www.youtube.com/watch?v=BellaCoco_BobbleStitch",
-      "photos": ["STITCH-009_tutorial_01.png", "STITCH-009_tutorial_02.png"],
+      "photos": [
+        "STITCH-009_tutorial_01.png",
+        "STITCH-009_tutorial_02.png"
+      ],
       "notes": "Uses more yarn but creates beautiful texture. Bella Coco tutorial.",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-18T15:15:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-18T15:15:00+00:00"
     },
     {
       "id": "STITCH-010",
       "name": "V-Stitch",
-      "name_aliases": ["V Stitch", "Vee Stitch"],
+      "name_aliases": [
+        "V Stitch",
+        "Vee Stitch"
+      ],
       "name_es": "Punto V",
       "abbreviation": "v-st",
       "category": "lace",
@@ -151,15 +225,28 @@
       "hookfully_link": "https://hookfully.com/v-stitch/",
       "instruction_link": "https://www.youtube.com/c/HookedByRobin",
       "video_link": "https://www.youtube.com/c/FiberFlux",
-      "photos": ["STITCH-010_tutorial_01.png", "STITCH-010_tutorial_02.png", "STITCH-010_tutorial_03.png", "STITCH-010_tutorial_04.png", "STITCH-010_tutorial_05.png", "STITCH-010_tutorial_06.png"],
+      "photos": [
+        "STITCH-010_tutorial_01.png",
+        "STITCH-010_tutorial_02.png",
+        "STITCH-010_tutorial_03.png",
+        "STITCH-010_tutorial_04.png",
+        "STITCH-010_tutorial_05.png",
+        "STITCH-010_tutorial_06.png"
+      ],
       "notes": "Great for light, airy shawls. Multiple tutorials: Hooked by Robin (quick scarf), Fiber Flux (one row repeat).",
-      "created_at": "2026-01-16T18:00:00Z",
-      "updated_at": "2026-01-17T15:30:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-16T18:00:00+00:00",
+      "updated_at": "2026-01-17T15:30:00+00:00"
     },
     {
       "id": "STITCH-011",
       "name": "Pinwheel Motif",
-      "name_aliases": ["Swirl Motif", "Spiral Motif"],
+      "name_aliases": [
+        "Swirl Motif",
+        "Spiral Motif"
+      ],
       "name_es": "Motivo de molinete",
       "abbreviation": null,
       "category": "specialty",
@@ -168,14 +255,23 @@
       "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/OlgaPoltava",
       "video_link": null,
-      "photos": ["STITCH-011_tutorial_01.png"],
+      "photos": [
+        "STITCH-011_tutorial_01.png"
+      ],
       "notes": "Olga Poltava tutorial. Complex join-as-you-go technique.",
-      "created_at": "2026-01-17T15:30:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-17T15:30:00+00:00",
+      "updated_at": null
     },
     {
       "id": "STITCH-012",
       "name": "Flower Lattice",
-      "name_aliases": ["Floral Shawl Stitch", "Solomon's Knot Variation"],
+      "name_aliases": [
+        "Floral Shawl Stitch",
+        "Solomon's Knot Variation"
+      ],
       "name_es": "Enrejado de flores",
       "abbreviation": null,
       "category": "lace",
@@ -184,14 +280,24 @@
       "hookfully_link": null,
       "instruction_link": "https://www.yarnspirations.com",
       "video_link": "https://www.youtube.com/c/Yarnspirations",
-      "photos": ["STITCH-012_tutorial_01.png", "STITCH-012_tutorial_02.png"],
+      "photos": [
+        "STITCH-012_tutorial_01.png",
+        "STITCH-012_tutorial_02.png"
+      ],
       "notes": "Yarnspirations floral shawl pattern. Free pattern available on their website.",
-      "created_at": "2026-01-17T15:30:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-17T15:30:00+00:00",
+      "updated_at": null
     },
     {
       "id": "STITCH-013",
       "name": "Star Flower Stitch",
-      "name_aliases": ["Lace Star Flower", "Flower Star Stitch"],
+      "name_aliases": [
+        "Lace Star Flower",
+        "Flower Star Stitch"
+      ],
       "name_es": "Punto estrella de flor",
       "abbreviation": null,
       "category": "lace",
@@ -200,14 +306,22 @@
       "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/HopefulTurns",
       "video_link": null,
-      "photos": ["STITCH-013_tutorial_01.png"],
+      "photos": [
+        "STITCH-013_tutorial_01.png"
+      ],
       "notes": "Hopeful Turns tutorial. Creates very open, airy fabric.",
-      "created_at": "2026-01-17T15:30:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-17T15:30:00+00:00",
+      "updated_at": null
     },
     {
       "id": "STITCH-014",
       "name": "Puff Stitch",
-      "name_aliases": ["Cluster Stitch"],
+      "name_aliases": [
+        "Cluster Stitch"
+      ],
       "name_es": "Punto puff",
       "abbreviation": "puff",
       "category": "textured",
@@ -216,14 +330,24 @@
       "hookfully_link": "https://hookfully.com/puff-stitch/",
       "instruction_link": "https://www.youtube.com/c/CrochetWorkshop",
       "video_link": null,
-      "photos": ["STITCH-014_tutorial_01.png"],
+      "photos": [
+        "STITCH-014_tutorial_01.png"
+      ],
       "notes": "Similar to bobble but typically shorter/rounder. Great for baby blankets.",
-      "created_at": "2026-01-17T15:30:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-17T15:30:00+00:00",
+      "updated_at": null
     },
     {
       "id": "STITCH-015",
       "name": "Crossed Double Crochet",
-      "name_aliases": ["X-Stitch", "Woven Stitch", "Punto Magnifico"],
+      "name_aliases": [
+        "X-Stitch",
+        "Woven Stitch",
+        "Punto Magnifico"
+      ],
       "name_es": "Punto cruzado",
       "abbreviation": "xdc",
       "category": "textured",
@@ -232,14 +356,24 @@
       "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/TejidoaCrochetMariam",
       "video_link": null,
-      "photos": ["STITCH-015_tutorial_01.png", "STITCH-015_tutorial_02.png"],
+      "photos": [
+        "STITCH-015_tutorial_01.png",
+        "STITCH-015_tutorial_02.png"
+      ],
       "notes": "Tejido a Crochet Mariam tutorial in Spanish. One-row repeat.",
-      "created_at": "2026-01-17T15:30:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-17T15:30:00+00:00",
+      "updated_at": null
     },
     {
       "id": "STITCH-016",
       "name": "Flower Lace Triangle",
-      "name_aliases": ["Flower Lace Shawl Stitch", "Floral Triangle Motif"],
+      "name_aliases": [
+        "Flower Lace Shawl Stitch",
+        "Floral Triangle Motif"
+      ],
       "name_es": "Encaje de flores triangular",
       "abbreviation": null,
       "category": "lace",
@@ -248,14 +382,27 @@
       "hookfully_link": null,
       "instruction_link": null,
       "video_link": null,
-      "photos": ["STITCH-016_tutorial_01.png", "STITCH-016_tutorial_02.png", "STITCH-016_tutorial_03.png", "STITCH-016_tutorial_04.png"],
+      "photos": [
+        "STITCH-016_tutorial_01.png",
+        "STITCH-016_tutorial_02.png",
+        "STITCH-016_tutorial_03.png",
+        "STITCH-016_tutorial_04.png"
+      ],
       "notes": "Multiple tutorials: Olga Poltava flower lace shawl, Crochet Town lace pattern 14.",
-      "created_at": "2026-01-18T15:15:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-18T15:15:00+00:00",
+      "updated_at": null
     },
     {
       "id": "STITCH-017",
       "name": "Solomon's Knot",
-      "name_aliases": ["Lover's Knot", "Knot Stitch", "Love Knot"],
+      "name_aliases": [
+        "Lover's Knot",
+        "Knot Stitch",
+        "Love Knot"
+      ],
       "name_es": "Nudo de Salomón",
       "abbreviation": "sk",
       "category": "lace",
@@ -264,30 +411,47 @@
       "hookfully_link": "https://hookfully.com/solomons-knot/",
       "instruction_link": "https://www.youtube.com/c/CrochetKnittingSort",
       "video_link": null,
-      "photos": ["STITCH-017_tutorial_01.png"],
+      "photos": [
+        "STITCH-017_tutorial_01.png"
+      ],
       "notes": "Crochet Knitting Sort tutorial - 'New design crochet! only 1 row very simple! crochet triangle shawl making'",
-      "created_at": "2026-01-23T12:00:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-23T12:00:00+00:00",
+      "updated_at": null
     },
     {
       "id": "STITCH-018",
       "name": "Lacy Corner to Corner",
-      "name_aliases": ["Lacy C2C", "Open C2C", "Lace C2C"],
+      "name_aliases": [],
       "name_es": "Esquina a esquina con encaje",
       "abbreviation": "lc2c",
       "category": "lace",
       "difficulty": "intermediate",
-      "description": "Corner to corner technique worked with open, lacy stitch pattern instead of traditional solid blocks. Creates elegant diagonal fabric.",
+      "description": "Corner to corner technique worked with open, lacy stitch pattern.",
       "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/CrochetwithTuulaMaaria",
-      "video_link": null,
-      "photos": ["STITCH-018_tutorial_01.png", "STITCH-018_tutorial_02.png"],
-      "notes": "Crochet with Tuula Maaria tutorial - 'Crochet a lace shawl. Lacy corner to corner technique'",
-      "created_at": "2026-01-23T12:00:00Z"
+      "video_link": "https://www.youtube.com/watch?v=hL0pxL824_w",
+      "photos": [
+        "STITCH-018_tutorial_01.png",
+        "STITCH-018_tutorial_02.png"
+      ],
+      "notes": "Crochet with Tuula Maaria tutorial",
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-23T12:00:00+00:00",
+      "updated_at": "2026-01-29T22:43:48.111403"
     },
     {
       "id": "STITCH-019",
       "name": "Mesh Stitch",
-      "name_aliases": ["Stylish Mesh", "Net Stitch", "Filet Mesh"],
+      "name_aliases": [
+        "Stylish Mesh",
+        "Net Stitch",
+        "Filet Mesh"
+      ],
       "name_es": "Punto de malla",
       "abbreviation": "mesh",
       "category": "lace",
@@ -296,25 +460,99 @@
       "hookfully_link": "https://hookfully.com/mesh-stitch/",
       "instruction_link": "https://www.youtube.com/c/NatalyMasters",
       "video_link": null,
-      "photos": ["STITCH-019_tutorial_01.png", "STITCH-019_tutorial_02.png", "STITCH-019_tutorial_03.png"],
+      "photos": [
+        "STITCH-019_tutorial_01.png",
+        "STITCH-019_tutorial_02.png",
+        "STITCH-019_tutorial_03.png"
+      ],
       "notes": "Nataly Masters tutorial - 'Beautiful Crochet Stitch Pattern STYLISH for sweater' (Russian with English title)",
-      "created_at": "2026-01-23T12:00:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-23T12:00:00+00:00",
+      "updated_at": null
     },
     {
       "id": "STITCH-020",
       "name": "Easy Lace Stitch",
-      "name_aliases": ["Simple Lace", "Scarf Lace Stitch"],
+      "name_aliases": [
+        "Simple Lace",
+        "Scarf Lace Stitch"
+      ],
       "name_es": "Punto de encaje fácil",
       "abbreviation": null,
-      "category": "lace",
-      "difficulty": "beginner",
+      "category": null,
+      "difficulty": null,
       "description": "Simple lace pattern ideal for scarves. Creates elegant wavy texture with minimal complexity.",
       "hookfully_link": null,
       "instruction_link": "https://www.youtube.com/c/Szydelkowopl",
-      "video_link": null,
-      "photos": ["STITCH-020_tutorial_01.png", "STITCH-020_tutorial_02.png"],
+      "video_link": "https://www.youtube.com/watch?v=s60b25g5T-4",
+      "photos": [
+        "STITCH-020_tutorial_01.png",
+        "STITCH-020_tutorial_02.png"
+      ],
       "notes": "Szydelkowo.pl tutorial - 'How to crochet Easy lace stitch for scarf - tutorial'",
-      "created_at": "2026-01-23T12:00:00Z"
+      "archived": false,
+      "archived_date": null,
+      "archived_reason": null,
+      "created_at": "2026-01-23T12:00:00+00:00",
+      "updated_at": "2026-01-29T22:48:20.043355"
+    },
+    {
+      "id": "STITCH-021",
+      "name": "Open Shell Lace",
+      "name_aliases": [
+        "Shell Lace Stitch",
+        "Openwork Shell Pattern"
+      ],
+      "name_es": "Conchas abiertas de encaje",
+      "abbreviation": null,
+      "category": "lace",
+      "difficulty": "intermediate",
+      "description": "Beautiful openwork pattern using shell/fan motifs creating an elegant lacy fabric. Creates an airy, delicate texture perfect for shawls and lightweight garments.",
+      "hookfully_link": null,
+      "instruction_link": "https://www.youtube.com/c/TatyanaFilipova",
+      "video_link": null,
+      "photos": [
+        "STITCH-021_diagram_01.png",
+        "STITCH-021_diagram_02.png",
+        "STITCH-021_sample_01.png",
+        "STITCH-021_tutorial_01.png"
+      ],
+      "notes": "Tatyana Filipova tutorial - 'A very beautiful openwork pattern. Easy to knit.' Shows in yellow and blue/purple yarn samples.",
+      "created_at": "2026-01-29T22:50:42.442437"
+    },
+    {
+      "id": "STITCH-022",
+      "name": "Flower Lace Scarf Pattern",
+      "name_aliases": [
+        "Flower Pattern",
+        "Vasilya Flower Stitch"
+      ],
+      "name_es": "Patrón de encaje con flores para bufanda",
+      "abbreviation": null,
+      "category": "lace",
+      "difficulty": "intermediate",
+      "description": "Delicate lace pattern creating flower-like motifs. Features a 5-row repeat with detailed chart. Perfect for scarves - 'just one skein and you're done!'",
+      "hookfully_link": null,
+      "instruction_link": "https://www.youtube.com/c/VasilyaKnits",
+      "video_link": null,
+      "photos": [
+        "STITCH-022_tutorial_01.png",
+        "STITCH-022_tutorial_02.png",
+        "STITCH-022_sample_01.png",
+        "STITCH-022_sample_02.png",
+        "STITCH-022_chart_row1.png",
+        "STITCH-022_chart_row2.png",
+        "STITCH-022_chart_row3.png",
+        "STITCH-022_chart_row4.png",
+        "STITCH-022_chart_row5.png"
+      ],
+      "notes": "Vasilya Knits tutorial - 'Scarf with a Flower pattern. Just one skein and you're done! Pattern chart'. Includes Russian/English text and 5-row chart.",
+      "created_at": "2026-01-29T22:50:42.442446"
     }
-  ]
+  ],
+  "_meta": {
+    "last_updated": "2026-01-29T22:48:20.043837"
+  }
 }

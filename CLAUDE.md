@@ -724,6 +724,13 @@ This directory contains 200+ standardized crochet stitch names (A-Z) in USA term
 - Stitch diagrams or charts
 - Sample photos showing the stitch pattern
 
+**URL Extraction from Screenshots:**
+When processing stitch screenshots, check if a browser URL bar is visible in the image. If a URL is visible:
+1. Extract the full URL from the browser address bar
+2. Automatically populate the `video_link` field with this URL
+3. If the URL is from YouTube, also use it to find the channel for `instruction_link`
+4. Note in processing summary that URL was auto-extracted
+
 **Metadata to extract:**
 
 | Field | Source | Notes |
@@ -837,6 +844,31 @@ ls -la images/stitches/inbox/
 ```
 
 If files exist, prompt user: "I found X files in [inbox]. Would you like me to process them now?"
+
+---
+
+### 2026-01-29: Inbox Processing - Stitches
+- **Processed:** 15 images from `images/stitches/inbox/`
+- **New Stitches Created:**
+  - **STITCH-021: Open Shell Lace** (Tatyana Filipova) - 4 photos
+    - Openwork shell/fan pattern, lace category
+    - Includes 2 diagrams + 2 samples (yellow & blue yarn)
+  - **STITCH-022: Flower Lace Scarf Pattern** (Vasilya Knits) - 9 photos
+    - Flower-like lace motif with 5-row repeat
+    - Includes 5 chart row images + 2 tutorials + 2 samples
+- **Inbox Status:** Empty
+
+### 2026-01-29: Save Bug Fix
+- **Issue:** Editing any entity (piece, yarn, stitch) caused Python backend to crash
+- **Error:** `KeyError: '_meta'` in `data_service.py:35`
+- **Root Cause:** The `_save_json` method assumed all JSON files have a `_meta` key, but they don't
+- **Fix Applied:**
+  - Modified `src/services/data_service.py` `_save_json` method to create `_meta` if it doesn't exist
+  - Also fixed `StitchForm.tsx` to preserve `name_aliases` field during updates (was being lost)
+- **Files Modified:**
+  - `src/services/data_service.py` - Added check for missing `_meta` key
+  - `frontend/src/pages/stitches/StitchForm.tsx` - Added `name_aliases` to update payload
+- **Status:** Fixed and tested
 
 ---
 

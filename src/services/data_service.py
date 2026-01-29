@@ -32,6 +32,9 @@ class DataService:
 
     def _save_json(self, filepath: Path, data: Dict[str, Any]) -> None:
         """Save JSON file."""
+        # Ensure _meta exists
+        if "_meta" not in data:
+            data["_meta"] = {}
         data["_meta"]["last_updated"] = datetime.now().isoformat()
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
